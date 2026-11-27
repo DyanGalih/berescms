@@ -7,12 +7,6 @@ parameters:
 			path: modules/backend/ServiceProvider.php
 
 		-
-			message: '#^Call to static method redirect\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/FormController.php
-
-		-
 			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
@@ -79,12 +73,6 @@ parameters:
 			path: modules/backend/behaviors/formcontroller/partials/_record_navigation.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/behaviors/formcontroller/partials/_toolbar.php
-
-		-
 			message: '#^Variable \$formConfig might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
@@ -103,34 +91,16 @@ parameters:
 			path: modules/backend/behaviors/formcontroller/views/create.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/create/_fancy.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 5
 			path: modules/backend/behaviors/formcontroller/views/create/_fancy.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/create/_sidebar.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 9
 			path: modules/backend/behaviors/formcontroller/views/create/_sidebar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/create/_standard.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
@@ -151,34 +121,16 @@ parameters:
 			path: modules/backend/behaviors/formcontroller/views/preview.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/preview/_fancy.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 6
 			path: modules/backend/behaviors/formcontroller/views/preview/_fancy.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/preview/_sidebar.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 9
 			path: modules/backend/behaviors/formcontroller/views/preview/_sidebar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/preview/_standard.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
@@ -193,34 +145,16 @@ parameters:
 			path: modules/backend/behaviors/formcontroller/views/update.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/update/_fancy.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 6
 			path: modules/backend/behaviors/formcontroller/views/update/_fancy.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/update/_sidebar.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 10
 			path: modules/backend/behaviors/formcontroller/views/update/_sidebar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/behaviors/formcontroller/views/update/_standard.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
@@ -907,14 +841,14 @@ parameters:
 			path: modules/backend/classes/MainMenuItem.php
 
 		-
-			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/classes/NavigationManager.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/classes/NavigationManager.php
 
@@ -943,14 +877,14 @@ parameters:
 			path: modules/backend/classes/WidgetBase.php
 
 		-
-			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/classes/WidgetManager.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/classes/WidgetManager.php
 
@@ -997,68 +931,44 @@ parameters:
 			path: modules/backend/controllers/AccessLogs.php
 
 		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/AccessLogs.php
-
-		-
-			message: '#^Call to static method authenticate\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:authenticate\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Auth.php
 
 		-
-			message: '#^Call to static method findUserById\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:findUserById\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Auth.php
 
 		-
-			message: '#^Call to static method findUserByLogin\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:findUserByLogin\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Auth.php
 
 		-
-			message: '#^Call to static method isImpersonator\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:isImpersonator\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Auth.php
 
 		-
-			message: '#^Call to static method logout\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:logout\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Auth.php
 
 		-
-			message: '#^Call to static method redirect\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 7
-			path: modules/backend/controllers/Auth.php
-
-		-
-			message: '#^Call to static method redirectIntended\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:stopImpersonate\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Auth.php
 
 		-
-			message: '#^Call to static method stopImpersonate\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/Auth.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/Auth.php
-
-		-
-			message: '#^Call to static method user\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:user\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 3
 			path: modules/backend/controllers/Auth.php
 
@@ -1067,42 +977,6 @@ parameters:
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Files.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/controllers/Files.php
-
-		-
-			message: '#^Call to static method listMainMenuItems\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/Index.php
-
-		-
-			message: '#^Call to static method redirect\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/Index.php
-
-		-
-			message: '#^Call to static method setContextMainMenu\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/Index.php
-
-		-
-			message: '#^Call to static method setContextOwner\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/Index.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/Media.php
 
 		-
 			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:login\(\)\.$#'
@@ -1115,12 +989,6 @@ parameters:
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/controllers/Preferences.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/UserGroups.php
 
 		-
 			message: '#^Call to an undefined method Backend\\Controllers\\Users\:\:formFindModelObject\(\)\.$#'
@@ -1147,12 +1015,6 @@ parameters:
 			path: modules/backend/controllers/accesslogs/index.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/auth/reset.php
-
-		-
 			message: '#^Variable \$code might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -1165,12 +1027,6 @@ parameters:
 			path: modules/backend/controllers/auth/reset.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/controllers/auth/restore.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -1179,12 +1035,6 @@ parameters:
 		-
 			message: '#^Call to an undefined static method Backend\\Models\\BrandSetting\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
-			count: 1
-			path: modules/backend/controllers/auth/signin.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
 			count: 1
 			path: modules/backend/controllers/auth/signin.php
 
@@ -1213,52 +1063,22 @@ parameters:
 			path: modules/backend/controllers/media/index.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/controllers/myaccount/index.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 8
 			path: modules/backend/controllers/myaccount/index.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/controllers/preferences/index.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 3
 			path: modules/backend/controllers/preferences/index.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/controllers/usergroups/_list_toolbar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/backend/controllers/usergroups/create.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 4
 			path: modules/backend/controllers/usergroups/create.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/backend/controllers/usergroups/update.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
@@ -1273,28 +1093,10 @@ parameters:
 			path: modules/backend/controllers/userroles/__users.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/controllers/userroles/_list_toolbar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/backend/controllers/userroles/create.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 4
 			path: modules/backend/controllers/userroles/create.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/backend/controllers/userroles/update.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
@@ -1315,34 +1117,16 @@ parameters:
 			path: modules/backend/controllers/users/_btn_unsuspend.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/backend/controllers/users/_list_toolbar.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
 			path: modules/backend/controllers/users/_list_toolbar.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/controllers/users/myaccount.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 9
 			path: modules/backend/controllers/users/myaccount.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/backend/controllers/users/update.php
 
 		-
 			message: '#^Variable \$formModel might not be defined\.$#'
@@ -1399,20 +1183,14 @@ parameters:
 			path: modules/backend/formwidgets/MarkdownEditor.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/formwidgets/MediaFinder.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/formwidgets/PermissionEditor.php
-
-		-
-			message: '#^Call to static method listTabbedPermissions\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/formwidgets/PermissionEditor.php
 
@@ -1667,12 +1445,6 @@ parameters:
 			identifier: variable.undefined
 			count: 1
 			path: modules/backend/formwidgets/datatable/partials/_datatable.php
-
-		-
-			message: '#^Call to static method dateTime\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/formwidgets/datepicker/partials/_datepicker.php
 
 		-
 			message: '#^Variable \$field might not be defined\.$#'
@@ -2689,6 +2461,12 @@ parameters:
 			path: modules/backend/layouts/_custom_styles.php
 
 		-
+			message: '#^Call to an undefined static method Backend\\Facades\\Backend\:\:decompileAsset\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: modules/backend/layouts/_head.php
+
+		-
 			message: '#^Call to an undefined static method Backend\\Models\\BrandSetting\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 2
@@ -2698,24 +2476,6 @@ parameters:
 			message: '#^Call to an undefined static method Backend\\Models\\Preference\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 2
-			path: modules/backend/layouts/_head.php
-
-		-
-			message: '#^Call to static method baseUrl\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_head.php
-
-		-
-			message: '#^Call to static method decompileAsset\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/backend/layouts/_head.php
-
-		-
-			message: '#^Call to static method skinAsset\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 6
 			path: modules/backend/layouts/_head.php
 
 		-
@@ -2749,44 +2509,20 @@ parameters:
 			path: modules/backend/layouts/_hint.php
 
 		-
-			message: '#^Call to an undefined static method Backend\\Models\\BrandSetting\:\:get\(\)\.$#'
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:isImpersonator\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/layouts/_mainmenu.php
 
 		-
-			message: '#^Call to static method getActiveMainMenuItem\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendMenu\:\:listQuickActionItems\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/layouts/_mainmenu.php
 
 		-
-			message: '#^Call to static method isImpersonator\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_mainmenu.php
-
-		-
-			message: '#^Call to static method isMainMenuItemActive\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_mainmenu.php
-
-		-
-			message: '#^Call to static method listMainMenuItems\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_mainmenu.php
-
-		-
-			message: '#^Call to static method listQuickActionItems\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_mainmenu.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Models\\BrandSetting\:\:get\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/layouts/_mainmenu.php
 
@@ -2797,30 +2533,6 @@ parameters:
 			path: modules/backend/layouts/_mainmenu.php
 
 		-
-			message: '#^Call to static method getContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_sidenav.php
-
-		-
-			message: '#^Call to static method getContextSidenavPartial\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_sidenav.php
-
-		-
-			message: '#^Call to static method isSideMenuItemActive\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_sidenav.php
-
-		-
-			message: '#^Call to static method listSideMenuItems\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/_sidenav.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -2833,44 +2545,26 @@ parameters:
 			path: modules/backend/layouts/auth.php
 
 		-
-			message: '#^Call to static method baseUrl\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/auth.php
-
-		-
-			message: '#^Call to static method skinAsset\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 4
-			path: modules/backend/layouts/auth.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 7
 			path: modules/backend/layouts/auth.php
 
 		-
-			message: '#^Call to static method getImpersonator\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getImpersonator\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/layouts/default.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/layouts/default.php
 
 		-
-			message: '#^Call to static method isImpersonator\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/layouts/default.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:isImpersonator\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/layouts/default.php
 
@@ -3403,8 +3097,8 @@ parameters:
 			path: modules/backend/models/UserGroup.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/models/UserPreference.php
 
@@ -3427,32 +3121,20 @@ parameters:
 			path: modules/backend/models/editorsetting/_toolbar_presets.php
 
 		-
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: modules/backend/reportwidgets/Welcome.php
+
+		-
 			message: '#^Call to an undefined static method Backend\\Models\\BrandSetting\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/reportwidgets/Welcome.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/reportwidgets/Welcome.php
-
-		-
-			message: '#^Call to static method dateTime\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/reportwidgets/welcome/partials/_widget.php
-
-		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/reportwidgets/welcome/partials/_widget.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/reportwidgets/welcome/partials/_widget.php
 
@@ -3485,18 +3167,6 @@ parameters:
 			identifier: staticMethod.notFound
 			count: 2
 			path: modules/backend/routes.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/views/404.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/views/access_denied.php
 
 		-
 			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
@@ -3553,26 +3223,26 @@ parameters:
 			path: modules/backend/widgets/Lists.php
 
 		-
+			message: '#^Call to an undefined static method Backend\\Facades\\Backend\:\:decompileAsset\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: modules/backend/widgets/MediaManager.php
+
+		-
 			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/widgets/MediaManager.php
 
 		-
-			message: '#^Call to static method decompileAsset\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/backend/widgets/MediaManager.php
-
-		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/widgets/ReportContainer.php
 
 		-
-			message: '#^Call to static method decompileAsset\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\Backend\:\:decompileAsset\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/widgets/Table.php
 
@@ -4795,8 +4465,8 @@ parameters:
 			path: modules/backend/widgets/reportcontainer/partials/_widget_list.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/backend/widgets/reportcontainer/partials/_widget_toolbar.php
 
@@ -4957,12 +4627,6 @@ parameters:
 			path: modules/cms/ServiceProvider.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/cms/ServiceProvider.php
-
-		-
 			message: '#^Class Cms\\Classes\\CmsController constructor invoked with 1 parameter, 0 required\.$#'
 			identifier: arguments.count
 			count: 2
@@ -5107,6 +4771,12 @@ parameters:
 			path: modules/cms/classes/Content.php
 
 		-
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: modules/cms/classes/Controller.php
+
+		-
 			message: '#^Call to an undefined static method Cms\\Models\\MaintenanceSetting\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 2
@@ -5122,18 +4792,6 @@ parameters:
 			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 2
-			path: modules/cms/classes/Controller.php
-
-		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/cms/classes/Controller.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Cms\.$#'
-			identifier: class.notFound
-			count: 1
 			path: modules/cms/classes/Controller.php
 
 		-
@@ -5155,14 +4813,14 @@ parameters:
 			path: modules/cms/classes/Meta.php
 
 		-
-			message: '#^Call to an undefined static method Cms\\Classes\\Page\:\:sortBy\(\)\.$#'
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/cms/classes/Page.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Cms\\Classes\\Page\:\:sortBy\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/cms/classes/Page.php
 
@@ -5257,38 +4915,8 @@ parameters:
 			path: modules/cms/controllers/ThemeLogs.php
 
 		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/cms/controllers/ThemeLogs.php
-
-		-
-			message: '#^Call to static method redirect\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/cms/controllers/ThemeOptions.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/cms/controllers/ThemeOptions.php
-
-		-
 			message: '#^Call to an undefined static method Backend\\Models\\BrandSetting\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
-			count: 1
-			path: modules/cms/controllers/Themes.php
-
-		-
-			message: '#^Call to static method redirect\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/cms/controllers/Themes.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
 			count: 1
 			path: modules/cms/controllers/Themes.php
 
@@ -5443,12 +5071,6 @@ parameters:
 			path: modules/cms/controllers/themelogs/_hint_preview.php
 
 		-
-			message: '#^Call to static method dateTime\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/cms/controllers/themelogs/_preview_scoreboard.php
-
-		-
 			message: '#^Variable \$formModel might not be defined\.$#'
 			identifier: variable.undefined
 			count: 5
@@ -5461,22 +5083,10 @@ parameters:
 			path: modules/cms/controllers/themelogs/index.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/cms/controllers/themelogs/preview.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 6
 			path: modules/cms/controllers/themelogs/preview.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/cms/controllers/themeoptions/update.php
 
 		-
 			message: '#^Variable \$hasCustomData might not be defined\.$#'
@@ -5569,34 +5179,16 @@ parameters:
 			path: modules/cms/controllers/themes/_theme_import_form.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/cms/controllers/themes/_theme_list.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
 			path: modules/cms/controllers/themes/_theme_list.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/cms/controllers/themes/_theme_list_item.php
-
-		-
 			message: '#^Variable \$theme might not be defined\.$#'
 			identifier: variable.undefined
 			count: 17
 			path: modules/cms/controllers/themes/_theme_list_item.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/cms/controllers/themes/download.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
@@ -5887,34 +5479,28 @@ parameters:
 			path: modules/cms/models/ThemeLog.php
 
 		-
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getRealUser\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: modules/cms/models/ThemeLog.php
+
+		-
 			message: '#^Call to an undefined static method System\\Models\\LogSetting\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/cms/models/ThemeLog.php
 
 		-
-			message: '#^Call to static method getRealUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/cms/models/ThemeLog.php
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: modules/cms/reportwidgets/ActiveTheme.php
 
 		-
 			message: '#^Call to an undefined static method Cms\\Models\\MaintenanceSetting\:\:get\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/cms/reportwidgets/ActiveTheme.php
-
-		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/cms/reportwidgets/ActiveTheme.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/cms/reportwidgets/activetheme/partials/_widget.php
 
 		-
 			message: '#^Variable \$canConfig might not be defined\.$#'
@@ -6481,12 +6067,6 @@ parameters:
 			path: modules/system/ServiceProvider.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 7
-			path: modules/system/ServiceProvider.php
-
-		-
 			message: '#^Method Winter\\Storm\\Support\\ModuleServiceProvider\:\:boot\(\) invoked with 1 parameter, 0 required\.$#'
 			identifier: arguments.count
 			count: 1
@@ -6501,18 +6081,6 @@ parameters:
 		-
 			message: '#^Array has 2 duplicate keys with value ''Http'' \(''Http'', ''Http''\)\.$#'
 			identifier: array.duplicateKey
-			count: 1
-			path: modules/system/aliases.php
-
-		-
-			message: '#^Class System\\Tests\\Bootstrap\\PluginTestCase not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/aliases.php
-
-		-
-			message: '#^Class System\\Tests\\Bootstrap\\TestCase not found\.$#'
-			identifier: class.notFound
 			count: 1
 			path: modules/system/aliases.php
 
@@ -6583,12 +6151,6 @@ parameters:
 			path: modules/system/classes/PluginBase.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/system/classes/PluginBase.php
-
-		-
 			message: '#^Method System\\Classes\\PluginBase\:\:registerNavigation\(\) should return array but return statement is missing\.$#'
 			identifier: return.missing
 			count: 1
@@ -6643,20 +6205,14 @@ parameters:
 			path: modules/system/classes/PluginManager.php
 
 		-
-			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/system/classes/SettingsManager.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/classes/SettingsManager.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Event\:\:fire\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/system/classes/SettingsManager.php
 
@@ -6787,12 +6343,6 @@ parameters:
 			path: modules/system/controllers/EventLogs.php
 
 		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/EventLogs.php
-
-		-
 			message: '#^Call to an undefined method System\\Controllers\\MailBrandSettings\:\:create\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -6817,38 +6367,14 @@ parameters:
 			path: modules/system/controllers/MailBrandSettings.php
 
 		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/MailBrandSettings.php
-
-		-
 			message: '#^Call to an undefined method System\\Controllers\\MailLayouts\:\:formFindModelObject\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: modules/system/controllers/MailLayouts.php
 
 		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/MailLayouts.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/MailPartials.php
-
-		-
 			message: '#^Call to an undefined method System\\Controllers\\MailTemplates\:\:formFindModelObject\(\)\.$#'
 			identifier: method.notFound
-			count: 1
-			path: modules/system/controllers/MailTemplates.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
 			count: 1
 			path: modules/system/controllers/MailTemplates.php
 
@@ -6863,36 +6389,6 @@ parameters:
 			identifier: staticMethod.notFound
 			count: 1
 			path: modules/system/controllers/RequestLogs.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/RequestLogs.php
-
-		-
-			message: '#^Call to static method redirect\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/system/controllers/Settings.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/Settings.php
-
-		-
-			message: '#^Call to static method setContextSideMenu\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/Settings.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/system/controllers/Settings.php
 
 		-
 			message: '#^Access to an undefined property System\\Controllers\\Updates\:\:\$useSecurityToken\.$#'
@@ -6925,24 +6421,6 @@ parameters:
 			path: modules/system/controllers/Updates.php
 
 		-
-			message: '#^Call to static method redirect\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/Updates.php
-
-		-
-			message: '#^Call to static method setContext\(\) on an unknown class BackendMenu\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/Updates.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/Updates.php
-
-		-
 			message: '#^Variable \$value might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -6959,18 +6437,6 @@ parameters:
 			identifier: variable.undefined
 			count: 2
 			path: modules/system/controllers/eventlogs/index.php
-
-		-
-			message: '#^Call to static method dateTime\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/eventlogs/preview.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/system/controllers/eventlogs/preview.php
 
 		-
 			message: '#^Variable \$formModel might not be defined\.$#'
@@ -6991,24 +6457,12 @@ parameters:
 			path: modules/system/controllers/mailbrandsettings/_field_mail_preview.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/system/controllers/mailbrandsettings/index.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 7
 			path: modules/system/controllers/mailbrandsettings/index.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/system/controllers/maillayouts/update.php
-
-		-
 			message: '#^Variable \$formModel might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
@@ -7021,12 +6475,6 @@ parameters:
 			path: modules/system/controllers/maillayouts/update.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/system/controllers/mailpartials/update.php
-
-		-
 			message: '#^Variable \$formModel might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -7037,30 +6485,6 @@ parameters:
 			identifier: variable.undefined
 			count: 4
 			path: modules/system/controllers/mailpartials/update.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/mailtemplates/_list_layouts_toolbar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/mailtemplates/_list_partials_toolbar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/mailtemplates/_list_templates_toolbar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/system/controllers/mailtemplates/index.php
 
 		-
 			message: '#^Variable \$activeTab might not be defined\.$#'
@@ -7075,15 +6499,9 @@ parameters:
 			path: modules/system/controllers/mailtemplates/index.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
-			path: modules/system/controllers/mailtemplates/update.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
 			path: modules/system/controllers/mailtemplates/update.php
 
 		-
@@ -7111,12 +6529,6 @@ parameters:
 			path: modules/system/controllers/requestlogs/index.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/system/controllers/requestlogs/preview.php
-
-		-
 			message: '#^Variable \$formModel might not be defined\.$#'
 			identifier: variable.undefined
 			count: 5
@@ -7133,12 +6545,6 @@ parameters:
 			identifier: variable.undefined
 			count: 1
 			path: modules/system/controllers/settings/mysettings.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/settings/update.php
 
 		-
 			message: '#^Variable \$parentLink might not be defined\.$#'
@@ -7195,22 +6601,10 @@ parameters:
 			path: modules/system/controllers/updates/_execute.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/updates/_install_plugins.php
-
-		-
 			message: '#^Variable \$installedPlugins might not be defined\.$#'
 			identifier: variable.undefined
 			count: 3
 			path: modules/system/controllers/updates/_install_plugins.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/updates/_install_themes.php
 
 		-
 			message: '#^Variable \$installedThemes might not be defined\.$#'
@@ -7231,22 +6625,10 @@ parameters:
 			path: modules/system/controllers/updates/_is_unfrozen.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/system/controllers/updates/_list_manage_toolbar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/updates/_list_manage_toolbar.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 3
-			path: modules/system/controllers/updates/_list_toolbar.php
 
 		-
 			message: '#^Variable \$fatalError might not be defined\.$#'
@@ -7319,12 +6701,6 @@ parameters:
 			identifier: variable.undefined
 			count: 5
 			path: modules/system/controllers/updates/_update_list.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 6
-			path: modules/system/controllers/updates/details.php
 
 		-
 			message: '#^Variable \$activeTab might not be defined\.$#'
@@ -7453,12 +6829,6 @@ parameters:
 			path: modules/system/controllers/updates/index.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 5
-			path: modules/system/controllers/updates/install.php
-
-		-
 			message: '#^Variable \$activeTab might not be defined\.$#'
 			identifier: variable.undefined
 			count: 1
@@ -7469,12 +6839,6 @@ parameters:
 			identifier: variable.undefined
 			count: 5
 			path: modules/system/controllers/updates/install.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/controllers/updates/manage.php
 
 		-
 			message: '#^Variable \$this might not be defined\.$#'
@@ -7969,8 +7333,8 @@ parameters:
 			path: modules/system/models/RequestLog.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
 			count: 1
 			path: modules/system/models/mailsetting/_send_test_button.php
 
@@ -7987,16 +7351,16 @@ parameters:
 			path: modules/system/partials/_settings_menu_items.php
 
 		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/partials/_system_sidebar.php
-
-		-
 			message: '#^Variable \$this might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
 			path: modules/system/partials/_system_sidebar.php
+
+		-
+			message: '#^Call to an undefined static method Backend\\Facades\\BackendAuth\:\:getUser\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: modules/system/reportwidgets/Status.php
 
 		-
 			message: '#^Call to an undefined static method Backend\\Models\\User\:\:where\(\)\.$#'
@@ -8023,28 +7387,10 @@ parameters:
 			path: modules/system/reportwidgets/Status.php
 
 		-
-			message: '#^Call to static method getUser\(\) on an unknown class BackendAuth\.$#'
-			identifier: class.notFound
-			count: 2
-			path: modules/system/reportwidgets/Status.php
-
-		-
 			message: '#^Variable \$warnings might not be defined\.$#'
 			identifier: variable.undefined
 			count: 2
 			path: modules/system/reportwidgets/status/partials/_warnings_form.php
-
-		-
-			message: '#^Call to static method dateTime\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/system/reportwidgets/status/partials/_widget.php
-
-		-
-			message: '#^Call to static method url\(\) on an unknown class Backend\.$#'
-			identifier: class.notFound
-			count: 6
-			path: modules/system/reportwidgets/status/partials/_widget.php
 
 		-
 			message: '#^Variable \$appBirthday might not be defined\.$#'
