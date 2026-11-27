@@ -96,10 +96,14 @@ class WinterInstall extends Command
 
         foreach ($chosenToInstall as $pluginCode) {
             $this->output->writeln('<info>Installing plugin ' . $pluginCode . '</info>');
-            $this->callSilent('plugin:install', [
-                'plugin' => $pluginCode
+            $exitCode = $this->callSilent('plugin:install', [
+                'name' => $pluginCode
             ]);
-            $this->output->writeln('<info>' . $pluginCode . ' installed successfully.</info>');
+            if ($exitCode === 0) {
+                $this->output->writeln('<info>' . $pluginCode . ' installed successfully.</info>');
+            } else {
+                $this->output->writeln('<error>' . $pluginCode . ' installation failed.</error>');
+            }
         }
 
         $this->displayOutro();
@@ -212,7 +216,7 @@ class WinterInstall extends Command
     {
         $chosenToInstall = [];
         if ($this->confirm('Install the Winter.Builder plugin?', false)) {
-            $chosenToInstall[] = 'Winter.Builder';
+            $chosenToInstall[] = 'winter/wn-builder-plugin';
         }
         return $chosenToInstall;
     }

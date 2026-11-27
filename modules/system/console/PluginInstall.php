@@ -1,6 +1,7 @@
 <?php namespace System\Console;
 
 use Symfony\Component\Process\Process;
+use System\Classes\ComposerManager;
 use System\Classes\PluginManager;
 use System\Classes\UpdateManager;
 use Winter\Storm\Console\Command;
@@ -63,9 +64,20 @@ class PluginInstall extends Command
 
         $this->info('Package installed successfully.');
 
+        // Refresh the root Composer loader so newly installed packages are discoverable
+        ComposerManager::instance()->autoload(base_path('vendor'));
+
         // Reload plugins in case new plugin was added
         $pluginManager = PluginManager::instance();
+        $existingPlugins = array_keys($pluginManager->getAllPlugins());
         $pluginManager->loadPlugins();
+
+        // Register any newly discovered plugins before running migrations
+        foreach ($pluginManager->getAllPlugins() as $code => $plugin) {
+            if (!in_array($code, $existingPlugins, true)) {
+                $pluginManager->registerPlugin($plugin, $code);
+            }
+        }
 
         // Run migrations unless --no-migrate flag is passed
         if (!$this->option('no-migrate')) {
