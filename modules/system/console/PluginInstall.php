@@ -45,6 +45,8 @@ class PluginInstall extends Command
             $this->output->writeln('<error>Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install plugins (e.g. composer require <package>).</error>');
             return;
         }
+
+        $code = array_get($pluginDetails, 'code');
         $hash = array_get($pluginDetails, 'hash');
 
         $this->output->writeln(sprintf('<info>Downloading plugin: %s</info>', $code));
