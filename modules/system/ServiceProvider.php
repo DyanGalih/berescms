@@ -117,6 +117,12 @@ class ServiceProvider extends ModuleServiceProvider
         $this->registerAssetBundles();
 
         /*
+         * Register syntax parser bindings
+         */
+        \Winter\Storm\Parse\Syntax\Parser::registerFilter('media', ['System\Classes\MediaLibrary', 'url']);
+        \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass(\System\Models\File::class);
+
+        /*
          * Boot plugins
          */
         PluginManager::instance()->bootAll();

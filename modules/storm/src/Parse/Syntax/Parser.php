@@ -32,6 +32,39 @@ class Parser
     protected $varPrefix = '';
 
     /**
+     * Registered global filters.
+     *
+     * @var array
+     */
+    protected static $registeredFilters = [];
+
+    /**
+     * Register a custom text filter.
+     *
+     * @param string $name
+     * @param callable|array $callback
+     * @return void
+     */
+    public static function registerFilter(string $name, $callback): void
+    {
+        static::$registeredFilters[$name] = $callback;
+    }
+
+    /**
+     * Get default filters.
+     *
+     * @return array
+     */
+    public static function getDefaultFilters(): array
+    {
+        $defaultFilters = [
+            'md' => ['Winter\Storm\Parse\Markdown', 'parse'],
+        ];
+
+        return array_merge($defaultFilters, static::$registeredFilters);
+    }
+
+    /**
      * Constructor.
      *
      * Available options:
@@ -47,10 +80,15 @@ class Parser
         $this->varPrefix = array_get($options, 'varPrefix', '');
         $this->fieldParser = new FieldParser($template, $options);
 
-        $textFilters = [
-            'md' => ['Winter\Storm\Parse\Markdown', 'parse'],
-            'media' => ['System\Classes\MediaLibrary', 'url']
-        ];
+        $textFilters = static::getDefaultFilters();
+        if (isset($options['filters'])) {
+            $textFilters = array_merge($textFilters, $options['filters']);
+        }
+
+        // Backward compatibility fallback for unbooted legacy contexts
+        if (!isset($textFilters['media']) && class_exists('System\Classes\MediaLibrary')) {
+            $textFilters['media'] = ['System\Classes\MediaLibrary', 'url'];
+        }
 
         $this->textParser = new TextParser(['filters' => $textFilters]);
     }
