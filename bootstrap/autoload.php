@@ -13,9 +13,11 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-$helperPath = __DIR__.'/../vendor/winter/storm/src/Support/helpers.php';
+$helperPath = file_exists(__DIR__.'/../modules/storm/src/Support/helpers.php')
+    ? __DIR__.'/../modules/storm/src/Support/helpers.php'
+    : __DIR__.'/../vendor/winter/storm/src/Support/helpers.php';
 
-if (!file_exists($helperPath)) {
+if (!file_exists($helperPath) || !file_exists(__DIR__.'/../vendor/autoload.php')) {
     header('HTTP/1.0 500 Internal Server Error');
     echo 'Missing vendor files, try running "composer install" or use the Wizard installer.'.PHP_EOL;
     exit(1);
