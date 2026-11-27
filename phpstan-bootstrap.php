@@ -9,6 +9,7 @@ $loader = new \Winter\Storm\Support\ClassLoader(
     __DIR__,
     sys_get_temp_dir() . '/phpstan_classes.php'
 );
+$loader->manifest = [];
 $loader->register();
 $loader->autoloadPackage('Backend\\', 'modules/backend/');
 $loader->autoloadPackage('System\\', 'modules/system/');
