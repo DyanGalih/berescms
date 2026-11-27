@@ -1,0 +1,175 @@
+<?php
+
+use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Grammars\Grammar;
+use Illuminate\Database\Query\Processors\Processor;
+use Winter\Storm\Database\Query\Grammars\MySqlGrammar;
+use Winter\Storm\Database\Query\Grammars\PostgresGrammar;
+use Winter\Storm\Database\Query\Grammars\SQLiteGrammar;
+use Winter\Storm\Database\Query\Grammars\SqlServerGrammar;
+use Winter\Storm\Database\QueryBuilder;
+
+class QueryBuilderTest extends \Winter\Storm\Tests\TestCase
+{
+    public function testSelectConcat()
+    {
+        // MySQL
+        $query = $this->getMySqlBuilder()
+            ->select(['id'])
+            ->selectConcat(['field', ' ', 'cast'], 'full_cast')
+            ->selectConcat(['field2', ' ', 'cast2'], 'full_cast2');
+
+        $this->assertEquals(
+            'select `id`, concat(`field`, \' \', `cast`) as `full_cast`, concat(`field2`, \' \', `cast2`) as `full_cast2`',
+            $query->toSql()
+        );
+
+        $query = $this->getMySqlBuilder()
+            ->select(['id'])
+            ->selectConcat(['"field"', ' ', 'cast'], 'full_cast');
+
+        $this->assertEquals(
+            'select `id`, concat(\'field\', \' \', `cast`) as `full_cast`',
+            $query->toSql()
+        );
+
+        // SQLite
+        $query = $this->getSQLiteBuilder()
+            ->select(['id'])
+            ->selectConcat(['field', ' ', 'cast'], 'full_cast')
+            ->selectConcat(['field2', ' ', 'cast2'], 'full_cast2');
+
+        $this->assertEquals(
+            'select "id", "field" || \' \' || "cast" as "full_cast", "field2" || \' \' || "cast2" as "full_cast2"',
+            $query->toSql()
+        );
+
+        $query = $this->getSQLiteBuilder()
+            ->select(['id'])
+            ->selectConcat(['"field"', ' ', 'cast'], 'full_cast');
+
+        $this->assertEquals(
+            'select "id", \'field\' || \' \' || "cast" as "full_cast"',
+            $query->toSql()
+        );
+
+        // PostgreSQL
+        $query = $this->getPostgresBuilder()
+            ->select(['id'])
+            ->selectConcat(['field', ' ', 'cast'], 'full_cast')
+            ->selectConcat(['field2', ' ', 'cast2'], 'full_cast2');
+
+        $this->assertEquals(
+            'select "id", concat("field", \' \', "cast") as "full_cast", concat("field2", \' \', "cast2") as "full_cast2"',
+            $query->toSql()
+        );
+
+        $query = $this->getPostgresBuilder()
+            ->select(['id'])
+            ->selectConcat(['"field"', ' ', 'cast'], 'full_cast');
+
+        $this->assertEquals(
+            'select "id", concat(\'field\', \' \', "cast") as "full_cast"',
+            $query->toSql()
+        );
+
+        // SQL Server
+        $query = $this->getSqlServerBuilder()
+            ->select(['id'])
+            ->selectConcat(['field', ' ', 'cast'], 'full_cast')
+            ->selectConcat(['field2', ' ', 'cast2'], 'full_cast2');
+
+        $this->assertEquals(
+            'select [id], concat([field], \' \', [cast]) as [full_cast], concat([field2], \' \', [cast2]) as [full_cast2]',
+            $query->toSql()
+        );
+
+        $query = $this->getSqlServerBuilder()
+            ->select(['id'])
+            ->selectConcat(['"field"', ' ', 'cast'], 'full_cast');
+
+        $this->assertEquals(
+            'select [id], concat(\'field\', \' \', [cast]) as [full_cast]',
+            $query->toSql()
+        );
+    }
+
+    protected function getConnection($connection = null, $table = null)
+    {
+        if ($connection) {
+            return parent::getConnection($connection, $table);
+        }
+
+        $connection = $this->getMockBuilder(\Illuminate\Database\Connection::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([
+                'table',
+                'raw',
+                'scalar',
+                'selectOne',
+                'select',
+                'cursor',
+                'insert',
+                'update',
+                'delete',
+                'statement',
+                'affectingStatement',
+                'unprepared',
+                'prepareBindings',
+                'transaction',
+                'beginTransaction',
+                'commit',
+                'rollBack',
+                'transactionLevel',
+                'pretend',
+                'getDatabaseName',
+                'getConfig',
+            ])
+            ->getMock();
+
+        $connection->method('getDatabaseName')->willReturn('database');
+        $connection->method('getConfig')->with('use_upsert_alias')->willReturn(false);
+
+        return $connection;
+    }
+
+    protected function getBuilder()
+    {
+        $grammar = new Grammar($this->getConnection());
+        $processor = $this->createMock(Processor::class);
+
+        return new QueryBuilder($this->getConnection(), $grammar, $processor);
+    }
+
+    protected function getMySqlBuilder()
+    {
+        $grammar = new MySqlGrammar($this->createMock(Connection::class));
+        $processor = $this->createMock(Processor::class);
+
+        return new QueryBuilder($this->getConnection(), $grammar, $processor);
+    }
+
+    protected function getPostgresBuilder()
+    {
+        $grammar = new PostgresGrammar($this->createMock(Connection::class));
+        $processor = $this->createMock(Processor::class);
+
+        return new QueryBuilder($this->getConnection(), $grammar, $processor);
+    }
+
+    protected function getSQLiteBuilder()
+    {
+        $grammar = new SQLiteGrammar($this->createMock(Connection::class));
+        $processor = $this->createMock(Processor::class);
+
+        return new QueryBuilder($this->getConnection(), $grammar, $processor);
+    }
+
+    protected function getSqlServerBuilder()
+    {
+        $grammar = new SqlServerGrammar($this->createMock(Connection::class));
+        $processor = $this->createMock(Processor::class);
+
+        return new QueryBuilder($this->getConnection(), $grammar, $processor);
+    }
+}

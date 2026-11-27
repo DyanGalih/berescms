@@ -1,0 +1,218 @@
+<?php namespace Winter\Storm\Parse\Assetic\Filter;
+
+use RuntimeException;
+use Assetic\Filter\BaseFilter;
+use Assetic\Contracts\Asset\AssetInterface;
+use Winter\Storm\Filesystem\PathResolver;
+use Winter\Storm\Support\Facades\File;
+
+/**
+ * Importer JS Filter
+ * Class used to import referenced javascript files.
+ *
+ * =include library/jquery.js;
+ * =require library/jquery.js;
+ *
+ * (@todo Below needs fixing)
+ * =define #FOO "Bar";
+ * console.log(#FOO);
+ *
+ * @author Alexey Bobkov, Samuel Georges
+ */
+class JavascriptImporter extends BaseFilter
+{
+    use HasAllowedImportRoots;
+
+    /**
+     * @var string Location of where the processed JS script resides.
+     */
+    protected $scriptPath;
+
+    /**
+     * @var string File name for the processed JS script.
+     */
+    protected $scriptFile;
+
+    /**
+     * @var array Cache of required files.
+     */
+    protected $includedFiles = [];
+
+    /**
+     * @var array Variables defined by this script.
+     */
+    protected $definedVars = [];
+
+    /**
+     * @inheritDoc
+     */
+    public function filterDump(AssetInterface $asset)
+    {
+        $this->scriptPath = dirname($asset->getSourceRoot() . '/' . $asset->getSourcePath());
+        $this->scriptFile = basename($asset->getSourcePath());
+
+        $asset->setContent($this->parse($asset->getContent()));
+    }
+
+    /**
+     * Process JS imports inside a string of JavaScript
+     *
+     * @param string $content JS code to process.
+     * @return string Processed JS.
+     */
+    protected function parse($content)
+    {
+        $imported = '';
+
+        // Look for: /* comments */
+        if (!preg_match_all('@/\*(.*)\*/@msU', $content, $matches)) {
+            return $content;
+        }
+
+        foreach ($matches[1] as $macro) {
+            // Look for: =include something
+            if (!preg_match_all('/=([^\\s]*)\\s(.*)\n/', $macro, $matches2)) {
+                continue;
+            }
+
+            foreach ($matches2[1] as $index => $macroName) {
+                $method = 'directive' . ucfirst(strtolower($macroName));
+
+                if (method_exists($this, $method)) {
+                    $imported .= $this->$method($matches2[2][$index]);
+                }
+            }
+        }
+
+        return $imported . $content;
+    }
+
+    /**
+     * Directive to process script includes
+     */
+    protected function directiveInclude($data, $required = false)
+    {
+        $require = explode(',', $data);
+        $result = "";
+
+        /*
+         * The set of roots an include may resolve into: the including file's own
+         * directory subtree plus any caller-configured cross-tree roots. Computed
+         * once here rather than per-iteration; $this->scriptPath is stable across
+         * the loop (nested parsing saves and restores it below).
+         */
+        $allowedRoots = array_merge([$this->scriptPath], $this->allowedImportRoots);
+
+        foreach ($require as $script) {
+            $script = trim($script);
+
+            if (!File::extension($script)) {
+                $script = $script . '.js';
+            }
+
+            /*
+             * Only JavaScript files may be inlined. Rejecting any other extension
+             * (e.g. `.env`, `.php`, `.log`) neutralises disclosure of non-JS server
+             * files even before the path-confinement check below, and mirrors the
+             * combiner's CSS importer, which is restricted to `.css`. Extension-less
+             * includes keep working — they are resolved to `.js` immediately above,
+             * before this check. See GHSA-2223-f22x-24cq.
+             */
+            if (strtolower((string) File::extension($script)) !== 'js') {
+                $errorMsg = sprintf("File '%s' has a disallowed extension. in %s", $script, $this->scriptFile);
+                if ($required) {
+                    throw new RuntimeException($errorMsg);
+                }
+
+                $result .= '/* ' . $errorMsg . ' */' . PHP_EOL;
+                continue;
+            }
+
+            $scriptPath = realpath($this->scriptPath . '/' . $script);
+            if (!File::isFile($scriptPath)) {
+                $errorMsg = sprintf("File '%s' not found. in %s", $script, $this->scriptFile);
+                if ($required) {
+                    throw new RuntimeException($errorMsg);
+                }
+
+                $result .= '/* ' . $errorMsg . ' */' . PHP_EOL;
+                continue;
+            }
+
+            /*
+             * Confine the resolved path to the including file's own directory subtree
+             * or a caller-configured allowed root, mirroring the LESS importer gate.
+             * Without this, `=include ../../../.env` would resolve via `realpath()`
+             * traversal and inline an arbitrary server-readable file into public
+             * combiner output. See GHSA-2223-f22x-24cq.
+             */
+            if (!PathResolver::withinAny($scriptPath, $allowedRoots)) {
+                $errorMsg = sprintf("File '%s' is outside the allowed import paths. in %s", $script, $this->scriptFile);
+                if ($required) {
+                    throw new RuntimeException($errorMsg);
+                }
+
+                $result .= '/* ' . $errorMsg . ' */' . PHP_EOL;
+                continue;
+            }
+
+            /*
+             * Exclude duplicates
+             */
+            if (in_array($script, $this->includedFiles)) {
+                continue;
+            }
+
+            $this->includedFiles[] = $script;
+
+            /*
+             * Nested parsing
+             */
+            $oldScriptPath = $this->scriptPath;
+            $oldScriptFile = $this->scriptFile;
+
+            $this->scriptPath = dirname($scriptPath);
+            $this->scriptFile = basename($scriptPath);
+
+            $content = File::get($scriptPath);
+            $content = $this->parse($content) . PHP_EOL;
+
+            $this->scriptPath = $oldScriptPath;
+            $this->scriptFile = $oldScriptFile;
+
+            /*
+             * Parse in "magic constants"
+             */
+            $content = str_replace(
+                ['__DATE__', '__FILE__'],
+                [date("D M j G:i:s T Y"), $script],
+                $content
+            );
+
+            $result .= $content;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Directive to process mandatory script includes
+     */
+    protected function directiveRequire($data)
+    {
+        return $this->directiveInclude($data, true);
+    }
+
+    /**
+     * Directive to define and replace variables
+     */
+    protected function directiveDefine($data)
+    {
+        if (preg_match('@([^\\s]*)\\s+(.*)@', $data, $matches)) {
+            // str_replace($matches[1], $matches[2], $context);
+            $this->definedVars[] = [$matches[1], $matches[2]];
+        }
+
+        return '';
+    }
+}
