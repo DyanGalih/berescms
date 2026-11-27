@@ -49,6 +49,30 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         return $property->getValue($object);
     }
 
+    /**
+     * Polyfill for assertArraySubset across all PHPUnit versions without external packages.
+     */
+    public static function assertArraySubset($subset, $array, bool $checkForObjectIdentity = false, string $message = ''): void
+    {
+        if (!is_iterable($subset)) {
+            throw new \InvalidArgumentException('Argument #1 of assertArraySubset must be array or Traversable');
+        }
+        if (!is_iterable($array)) {
+            throw new \InvalidArgumentException('Argument #2 of assertArraySubset must be array or Traversable');
+        }
+
+        foreach ($subset as $key => $value) {
+            Assert::assertArrayHasKey($key, $array, $message);
+            if (is_array($value) && is_array($array[$key])) {
+                self::assertArraySubset($value, $array[$key], $checkForObjectIdentity, $message);
+            } elseif ($checkForObjectIdentity) {
+                Assert::assertSame($value, $array[$key], $message);
+            } else {
+                Assert::assertEquals($value, $array[$key], $message);
+            }
+        }
+    }
+
     public static function setProtectedProperty($object, $name, $value)
     {
         $className = get_class($object);

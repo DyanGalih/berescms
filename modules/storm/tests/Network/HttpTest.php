@@ -5,8 +5,6 @@ use Winter\Storm\Network\Http;
 
 class HttpTest extends \Winter\Storm\Tests\TestCase
 {
-    use \DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
-
     /**
      * Http object fixture
      *
