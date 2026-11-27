@@ -67,6 +67,9 @@ class CreateMigrationTest extends PluginTestCase
             if ($expectedType === 'boolean' && in_array($actualType, ['boolean', 'tinyint'], true)) {
                 $actualType = 'boolean';
             }
+            if ($expectedType === 'float' && in_array($actualType, ['float', 'double'], true)) {
+                $actualType = 'float';
+            }
             $this->assertEquals($expectedType, $actualType);
 
             // assert an index has been created for the primary, morph and foreign keys
