@@ -58,7 +58,9 @@ class GrammarTestCase extends TestCase
 
     protected function getSchemaGrammar()
     {
-        return new ($this->grammarClass)($this->connection);
+        $grammar = new ($this->grammarClass)($this->connection);
+        $grammar->connection = $this->connection;
+        return $grammar;
     }
 
     protected function getSchemaBuilder($blueprint)

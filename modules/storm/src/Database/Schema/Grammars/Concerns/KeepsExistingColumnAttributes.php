@@ -23,14 +23,25 @@ trait KeepsExistingColumnAttributes
     abstract protected function getKeptColumnAttributes($existing, Fluent $column): array;
 
     /**
+     * @var \Illuminate\Database\Connection|null
+     */
+    public $connection = null;
+
+    /**
      * Copy the attributes of the existing column that the new definition doesn't set onto the column.
      *
      * The attributes are set on the column itself, because on PostgreSQL and SQL Server its comment and
      * default are compiled by separate commands that run after the change and read the same column.
      */
-    protected function keepExistingColumnAttributes(Blueprint $blueprint, Fluent $column): void
+    protected function keepExistingColumnAttributes(Blueprint $blueprint, Fluent $column, $connection = null): void
     {
-        $existing = collect($this->connection->getSchemaBuilder()->getColumns($blueprint->getTable()))
+        $connection = $connection ?? ($this->connection ?? ($blueprint->connection ?? null));
+
+        if (!$connection) {
+            return;
+        }
+
+        $existing = collect($connection->getSchemaBuilder()->getColumns($blueprint->getTable()))
             ->firstWhere('name', $column->get('name'));
 
         if (!$existing) {

@@ -30,7 +30,9 @@ class PostgresGrammar extends BasePostgresGrammar
         /** @var \Illuminate\Database\Schema\ColumnDefinition $column */
         $column = $command->get('column');
 
-        $this->keepExistingColumnAttributes($blueprint, $column);
+        $connection = $args[0] ?? ($this->connection ?? ($blueprint->connection ?? null));
+
+        $this->keepExistingColumnAttributes($blueprint, $column, $connection);
 
         return parent::compileChange($blueprint, $command, ...$args);
     }
@@ -62,6 +64,10 @@ class PostgresGrammar extends BasePostgresGrammar
     {
         if (is_string($value) && strlen($value) >= 2 && $value[0] === "'" && substr($value, -1) === "'") {
             $value = substr($value, 1, -1);
+        }
+
+        if (is_string($value)) {
+            return "'" . str_replace("'", "''", $value) . "'";
         }
 
         return parent::getDefaultValue($value);
