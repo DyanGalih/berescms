@@ -18,6 +18,10 @@ class SQLiteGrammar extends BaseSQLiteGrammar
             $value = substr($value, 1, -1);
         }
 
+        if (is_string($value)) {
+            return "'" . str_replace("'", "''", $value) . "'";
+        }
+
         return parent::getDefaultValue($value);
     }
 }
