@@ -23,14 +23,14 @@ trait MySqlBasedGrammar
      * @param  \Illuminate\Support\Fluent  $command
      * @return array|string
      */
-    public function compileChange(Blueprint $blueprint, Fluent $command)
+    public function compileChange(Blueprint $blueprint, Fluent $command, ...$args)
     {
         /** @var \Illuminate\Database\Schema\ColumnDefinition $column */
         $column = $command->get('column');
 
         $this->keepExistingColumnAttributes($blueprint, $column);
 
-        return parent::compileChange($blueprint, $command);
+        return parent::compileChange($blueprint, $command, ...$args);
     }
 
     /** @inheritDoc */
