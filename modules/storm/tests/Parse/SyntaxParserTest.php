@@ -76,15 +76,16 @@ class SyntaxParserTest extends \Winter\Storm\Tests\TestCase
         $original = \Winter\Storm\Parse\Syntax\SyntaxModelTrait::getFileModelClass();
         $this->assertEquals('System\Models\File', $original);
 
-        \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass('Acme\Models\CustomFile');
-        $this->assertEquals('Acme\Models\CustomFile', \Winter\Storm\Parse\Syntax\SyntaxModelTrait::getFileModelClass());
+        try {
+            \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass('Acme\Models\CustomFile');
+            $this->assertEquals('Acme\Models\CustomFile', \Winter\Storm\Parse\Syntax\SyntaxModelTrait::getFileModelClass());
 
-        $model = new TestSyntaxConsumerModel();
-        $model->defineSyntaxRelations();
-        $this->assertEquals('Acme\Models\CustomFile', $model->attachOne['avatar']);
-
-        // Restore
-        \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass($original);
+            $model = new TestSyntaxConsumerModel();
+            $model->defineSyntaxRelations();
+            $this->assertEquals('Acme\Models\CustomFile', $model->attachOne['avatar']);
+        } finally {
+            \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass($original);
+        }
     }
 
     public function testParseRepeaterToView()
