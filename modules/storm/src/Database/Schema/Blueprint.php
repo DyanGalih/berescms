@@ -35,12 +35,13 @@ class Blueprint extends BaseBlueprint
      *
      * @return void
      */
-    protected function addImpliedCommands()
+    protected function addImpliedCommands(...$args)
     {
-        parent::addImpliedCommands();
+        parent::addImpliedCommands(...$args);
 
         if (!is_null($this->state)) {
-            $this->state = new BlueprintState($this, $this->connection);
+            $connection = $args[0] ?? ($this->connection ?? null);
+            $this->state = new BlueprintState($this, $connection);
         }
     }
 }
