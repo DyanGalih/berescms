@@ -264,6 +264,10 @@ class UpdateManager
         $icons = $installed->lists('icon', 'code');
         $frozen = $installed->lists('is_frozen', 'code');
         $updatable = $installed->lists('is_updatable', 'code');
+        if (Config::get('cms.disableUpdates', true) || !Config::get('cms.updateServer')) {
+            return [];
+        }
+
         $build = Parameter::get('system::core.build');
         $themes = [];
 
@@ -843,6 +847,10 @@ class UpdateManager
      */
     public function requestChangelog()
     {
+        if (Config::get('cms.disableUpdates', true) || !Config::get('cms.updateServer')) {
+            return [];
+        }
+
         $build = Parameter::get('system::core.build');
 
         // Determine branch
@@ -935,6 +943,10 @@ class UpdateManager
      */
     public function requestServerData($uri, $postData = [])
     {
+        if (Config::get('cms.disableUpdates', true) || !Config::get('cms.updateServer')) {
+            return [];
+        }
+
         $result = Http::post($this->createServerUrl($uri), function ($http) use ($postData) {
             $this->applyHttpAttributes($http, $postData);
         });
@@ -981,6 +993,10 @@ class UpdateManager
      */
     public function requestServerFile($uri, $fileCode, $expectedHash, $postData = [])
     {
+        if (Config::get('cms.disableUpdates', true) || !Config::get('cms.updateServer')) {
+            throw new ApplicationException('Updates are disabled.');
+        }
+
         $filePath = $this->getFilePath($fileCode);
 
         $result = Http::post($this->createServerUrl($uri), function ($http) use ($postData, $filePath) {
@@ -1027,7 +1043,11 @@ class UpdateManager
      */
     protected function createServerUrl($uri)
     {
-        $gateway = Config::get('cms.updateServer', 'https://api.wintercms.com/marketplace');
+        $gateway = Config::get('cms.updateServer');
+        if (empty($gateway)) {
+            return '';
+        }
+
         if (substr($gateway, -1) != '/') {
             $gateway .= '/';
         }

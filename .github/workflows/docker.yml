@@ -1,5 +1,8 @@
 name: Docker
 
+# Disabled in BeresCMS to prevent publishing to upstream wintercms/docker (Blocking Gate 5).
+# Retained as a disabled reference template for BeresCMS container distribution.
+
 on:
   push:
     tags:
@@ -12,6 +15,7 @@ concurrency:
 jobs:
   updateDockerImage:
     name: Update Docker image
+    if: false
     runs-on: ubuntu-latest
     env:
       version: ${{ github.ref_name }}

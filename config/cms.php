@@ -473,4 +473,29 @@ return [
     */
 
     'enableBackendServiceWorkers' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Disable Updates & Marketplace
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, disables outbound calls to third-party update and marketplace
+    | APIs. In BeresCMS, this is enabled by default to prevent unwanted calls
+    | to upstream Winter CMS infrastructure.
+    |
+    */
+
+    'disableUpdates' => env('CMS_DISABLE_UPDATES', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Server
+    |--------------------------------------------------------------------------
+    |
+    | The base URL used for marketplace queries and update checks. In BeresCMS,
+    | this is empty by default unless explicitly configured.
+    |
+    */
+
+    'updateServer' => env('CMS_UPDATE_SERVER', null),
 ];
