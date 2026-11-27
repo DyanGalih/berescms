@@ -242,22 +242,32 @@ ESC;
         $this->assertEquals('welcome.htm', $content->fileName);
         $this->assertEquals('<p>Hi friend</p>', $content->markup);
 
-        $targetFile = __DIR__.'/../fixtures/halcyon/themes/theme1/content/welcome.htm';
-        $newTargetFile = __DIR__.'/../fixtures/halcyon/themes/theme1/content/welcome.txt';
+        $sourceFile = __DIR__.'/../fixtures/halcyon/themes/theme1/content/welcome.htm';
+        $targetFile = __DIR__.'/../fixtures/halcyon/themes/theme1/content/scratch_welcome.htm';
+        $newTargetFile = __DIR__.'/../fixtures/halcyon/themes/theme1/content/scratch_welcome.txt';
 
-        $this->assertFileExists($targetFile);
+        copy($sourceFile, $targetFile);
 
-        $content->fileName = 'welcome.txt';
-        $content->save();
+        try {
+            $scratchContent = HalcyonTestContent::find('scratch_welcome');
+            $this->assertNotNull($scratchContent);
+            $this->assertFileExists($targetFile);
 
-        $this->assertFileExists($newTargetFile);
-        $this->assertFileNotExists($targetFile);
+            $scratchContent->fileName = 'scratch_welcome.txt';
+            $scratchContent->save();
 
-        $content->fileName = 'welcome.htm';
-        $content->save();
+            $this->assertFileExists($newTargetFile);
+            $this->assertFileNotExists($targetFile);
 
-        $this->assertFileNotExists($newTargetFile);
-        $this->assertFileExists($targetFile);
+            $scratchContent->fileName = 'scratch_welcome.htm';
+            $scratchContent->save();
+
+            $this->assertFileNotExists($newTargetFile);
+            $this->assertFileExists($targetFile);
+        } finally {
+            @unlink($targetFile);
+            @unlink($newTargetFile);
+        }
     }
 
     public function testUpdatePageFileExists()

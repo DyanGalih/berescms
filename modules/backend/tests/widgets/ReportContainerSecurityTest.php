@@ -327,6 +327,10 @@ class ReportContainerSecurityTest extends PluginTestCase
             return trim($matches[1]);
         }
 
+        if (preg_match('/(?:ApplicationException|Exception)?[:\s]*([^\r\n<>\'"]*is not a report widget[^\r\n<>\'"]*)/i', $content, $matches)) {
+            return trim($matches[1]);
+        }
+
         // If falling back to content, remove stack frame line numbers and frame IDs so comparisons between tests remain stable
         $clean = preg_replace('/#frame-\d+[^"\']*/', '', $content);
         $clean = preg_replace('/:\d+/', '', $clean);

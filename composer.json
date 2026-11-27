@@ -109,14 +109,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "policy": {
-            "advisories": {
-                "block": false
-            }
-        },
-        "audit": {
-            "block": false
-        },
         "allow-plugins": {
             "composer/installers": true
         }
