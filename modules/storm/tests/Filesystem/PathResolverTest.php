@@ -170,7 +170,9 @@ class PathResolverTest extends \Winter\Storm\Tests\TestCase
 
     public function testRelativeToWorkingDirPaths()
     {
-        if (class_exists('System\ServiceProvider')) {
+        if (is_dir('./modules/storm/')) {
+            $baseWorkingDir = './modules/storm/';
+        } elseif (class_exists('System\ServiceProvider')) {
             $baseWorkingDir = './vendor/wintercms/storm/';
         } else {
             $baseWorkingDir = './';
