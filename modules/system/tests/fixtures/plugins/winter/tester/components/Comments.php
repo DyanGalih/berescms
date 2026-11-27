@@ -11,7 +11,7 @@ class Comments extends ComponentBase
     public function __construct(?CodeBase $cmsObject = null, $properties = [], ?Users $users = null)
     {
         parent::__construct($cmsObject, $properties);
-        $this->users = $users;
+        $this->users = $users ?? \Illuminate\Support\Facades\App::make(Users::class);
     }
 
     public function componentDetails()

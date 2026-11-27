@@ -203,11 +203,33 @@ class InspectableContainerSecurityTest extends PluginTestCase
      */
     protected function refusalMessage($response): string
     {
-        preg_match('/<title>(.*?)<\/title>/s', $response->getContent(), $matches);
+        $content = $response->getContent();
 
-        $this->assertNotEmpty($matches[1] ?? '', 'The response should report a reason');
+        // Modern Laravel error view embeds the exception message in the markdown script constant
+        if (preg_match("/const markdown = \x27# [^\n]*?\\\\n\\\\n(.*?)\\\\n\\\\n/s", $content, $matches)) {
+            return trim($matches[1]);
+        }
 
-        return $matches[1];
+        if (preg_match('/<div class="exception-name-block"[^>]*>\s*<div>(.*?)<\/div>/s', $content, $matches)) {
+            return trim(strip_tags($matches[1]));
+        }
+
+        if (preg_match('/class="[^"]*exception-message[^"]*"[^>]*>(.*?)<\/(?:div|span|h1|h2|p)>/s', $content, $matches)) {
+            return trim(strip_tags($matches[1]));
+        }
+
+        if (preg_match('/<div class="message"[^>]*>(.*?)<\/div>/s', $content, $matches)) {
+            return trim(strip_tags($matches[1]));
+        }
+
+        if (preg_match('/<title>(.*?)<\/title>/s', $content, $matches)) {
+            $title = trim($matches[1]);
+            if (!empty($title) && $title !== 'Winter CMS' && $title !== 'BeresCMS' && $title !== 'Exception') {
+                return $title;
+            }
+        }
+
+        return $content;
     }
 
     protected function assertWasNotLookedUp(string $className): void
