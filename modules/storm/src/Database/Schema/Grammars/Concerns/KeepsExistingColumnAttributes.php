@@ -23,11 +23,6 @@ trait KeepsExistingColumnAttributes
     abstract protected function getKeptColumnAttributes($existing, Fluent $column): array;
 
     /**
-     * @var \Illuminate\Database\Connection|null
-     */
-    public $connection = null;
-
-    /**
      * Copy the attributes of the existing column that the new definition doesn't set onto the column.
      *
      * The attributes are set on the column itself, because on PostgreSQL and SQL Server its comment and

@@ -59,7 +59,9 @@ class GrammarTestCase extends TestCase
     protected function getSchemaGrammar()
     {
         $grammar = new ($this->grammarClass)($this->connection);
-        $grammar->connection = $this->connection;
+        if (method_exists($grammar, 'setConnection')) {
+            $grammar->setConnection($this->connection);
+        }
         return $grammar;
     }
 
