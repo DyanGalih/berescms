@@ -110,7 +110,7 @@ class UpdateManager
         $this->bindContainerObjects();
 
         /*
-         * Ensure temp directory exists
+         * Verify working directory existence
          */
         if (!File::isDirectory($this->tempDirectory) && File::isWritable($this->tempDirectory)) {
             File::makeDirectory($this->tempDirectory, 0777, true);
@@ -120,7 +120,7 @@ class UpdateManager
     /**
      * These objects are "soft singletons" and may be lost when
      * the IoC container reboots. This provides a way to rebuild
-     * for the purposes of unit testing.
+     * to support unit testing.
      */
     public function bindContainerObjects()
     {
@@ -159,7 +159,7 @@ class UpdateManager
                 if (!$replaces = $plugin->getReplaces()) {
                     continue;
                 }
-                // TODO: add full support for plugins replacing multiple plugins
+                // Support for plugins replacing multiple plugins is evaluated in future roadmap.
                 if (count($replaces) > 1) {
                     throw new ApplicationException(Lang::get('system::lang.plugins.replace.multi_install_error'));
                 }
@@ -358,7 +358,7 @@ class UpdateManager
      */
     public function requestProjectDetails($projectId)
     {
-        return $this->requestServerData('project/detail', ['id' => $projectId]);
+        return [];
     }
 
     /**
@@ -454,7 +454,7 @@ class UpdateManager
      */
     public function getHash()
     {
-        return Parameter::get('system::core.hash', md5('NULL'));
+        return Parameter::get('system::core.hash', hash('sha256', 'NULL'));
     }
 
     /**
@@ -512,7 +512,7 @@ class UpdateManager
      */
     public function downloadCore($hash)
     {
-        $this->requestServerFile('core/get', 'core', $hash, ['type' => 'update']);
+        throw new ApplicationException('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install or update dependencies.');
     }
 
     /**
@@ -521,13 +521,7 @@ class UpdateManager
      */
     public function extractCore()
     {
-        $filePath = $this->getFilePath('core');
-
-        if (!Zip::extract($filePath, $this->baseDirectory)) {
-            throw new ApplicationException(Lang::get('system::lang.zip.extract_failed', ['file' => $filePath]));
-        }
-
-        @unlink($filePath);
+        throw new ApplicationException('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install or update dependencies.');
     }
 
     /**
@@ -562,7 +556,7 @@ class UpdateManager
      */
     public function requestPluginDetails($name)
     {
-        return $this->requestServerData('plugin/detail', ['name' => $name]);
+        return [];
     }
 
     /**
@@ -572,7 +566,7 @@ class UpdateManager
      */
     public function requestPluginContent($name)
     {
-        return $this->requestServerData('plugin/content', ['name' => $name]);
+        return [];
     }
 
     /**
@@ -656,11 +650,7 @@ class UpdateManager
      */
     public function downloadPlugin($name, $hash, $installation = false)
     {
-        $fileCode = $name . $hash;
-        $this->requestServerFile('plugin/get', $fileCode, $hash, [
-            'name'         => $name,
-            'installation' => $installation ? 1 : 0
-        ]);
+        throw new ApplicationException('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install or update dependencies.');
     }
 
     /**
@@ -668,14 +658,7 @@ class UpdateManager
      */
     public function extractPlugin($name, $hash)
     {
-        $fileCode = $name . $hash;
-        $filePath = $this->getFilePath($fileCode);
-
-        if (!Zip::extract($filePath, plugins_path())) {
-            throw new ApplicationException(Lang::get('system::lang.zip.extract_failed', ['file' => $filePath]));
-        }
-
-        @unlink($filePath);
+        throw new ApplicationException('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install or update dependencies.');
     }
 
     //
@@ -689,7 +672,7 @@ class UpdateManager
      */
     public function requestThemeDetails($name)
     {
-        return $this->requestServerData('theme/detail', ['name' => $name]);
+        return [];
     }
 
     /**
@@ -700,9 +683,7 @@ class UpdateManager
      */
     public function downloadTheme($name, $hash)
     {
-        $fileCode = $name . $hash;
-
-        $this->requestServerFile('theme/get', $fileCode, $hash, ['name' => $name]);
+        throw new ApplicationException('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install or update dependencies.');
     }
 
     /**
@@ -710,18 +691,7 @@ class UpdateManager
      */
     public function extractTheme($name, $hash)
     {
-        $fileCode = $name . $hash;
-        $filePath = $this->getFilePath($fileCode);
-
-        if (!Zip::extract($filePath, themes_path())) {
-            throw new ApplicationException(Lang::get('system::lang.zip.extract_failed', ['file' => $filePath]));
-        }
-
-        if ($this->themeManager) {
-            $this->themeManager->setInstalled($name);
-        }
-
-        @unlink($filePath);
+        throw new ApplicationException('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install or update dependencies.');
     }
 
     //
@@ -730,51 +700,7 @@ class UpdateManager
 
     public function requestProductDetails($codes, $type = null)
     {
-        if ($type != 'plugin' && $type != 'theme') {
-            $type = 'plugin';
-        }
-
-        $codes = (array) $codes;
-        $this->loadProductDetailCache();
-
-        /*
-         * New products requested
-         */
-        $newCodes = array_diff($codes, array_keys($this->productCache[$type]));
-        if (count($newCodes)) {
-            $dataCodes = [];
-            $data = $this->requestServerData($type . '/details', ['names' => $newCodes]);
-            foreach ($data as $product) {
-                $code = array_get($product, 'code', -1);
-                $this->cacheProductDetail($type, $code, $product);
-                $dataCodes[] = $code;
-            }
-
-            /*
-             * Cache unknown products
-             */
-            $unknownCodes = array_diff($newCodes, $dataCodes);
-            foreach ($unknownCodes as $code) {
-                $this->cacheProductDetail($type, $code, -1);
-            }
-
-            $this->saveProductDetailCache();
-        }
-
-        /*
-         * Build details from cache
-         */
-        $result = [];
-        $requestedDetails = array_intersect_key($this->productCache[$type], array_flip($codes));
-
-        foreach ($requestedDetails as $detail) {
-            if ($detail === -1) {
-                continue;
-            }
-            $result[] = $detail;
-        }
-
-        return $result;
+        return [];
     }
 
     /**
@@ -782,51 +708,16 @@ class UpdateManager
      */
     public function requestPopularProducts($type = null)
     {
-        if ($type != 'plugin' && $type != 'theme') {
-            $type = 'plugin';
-        }
-
-        $cacheKey = 'system-updates-popular-' . $type;
-
-        if (Cache::has($cacheKey)) {
-            return @unserialize(@base64_decode(Cache::get($cacheKey))) ?: [];
-        }
-
-        $data = $this->requestServerData($type . '/popular');
-        $expiresAt = now()->addMinutes(60);
-        Cache::put($cacheKey, base64_encode(serialize($data)), $expiresAt);
-
-        foreach ($data as $product) {
-            $code = array_get($product, 'code', -1);
-            $this->cacheProductDetail($type, $code, $product);
-        }
-
-        $this->saveProductDetailCache();
-
-        return $data;
+        return [];
     }
 
     protected function loadProductDetailCache()
     {
-        $defaultCache = ['theme' => [], 'plugin' => []];
-        $cacheKey = 'system-updates-product-details';
-
-        if (Cache::has($cacheKey)) {
-            $this->productCache = @unserialize(@base64_decode(Cache::get($cacheKey))) ?: $defaultCache;
-        } else {
-            $this->productCache = $defaultCache;
-        }
+        $this->productCache = ['theme' => [], 'plugin' => []];
     }
 
     protected function saveProductDetailCache()
     {
-        if ($this->productCache === null) {
-            $this->loadProductDetailCache();
-        }
-
-        $cacheKey = 'system-updates-product-details';
-        $expiresAt = Carbon::now()->addDays(2);
-        Cache::put($cacheKey, base64_encode(serialize($this->productCache)), $expiresAt);
     }
 
     protected function cacheProductDetail($type, $code, $data)
@@ -847,40 +738,7 @@ class UpdateManager
      */
     public function requestChangelog()
     {
-        if (Config::get('cms.disableUpdates', true) || !Config::get('cms.updateServer')) {
-            return [];
-        }
-
-        $build = Parameter::get('system::core.build');
-
-        // Determine branch
-        if (!is_null($build)) {
-            $branch = explode('.', $build);
-            array_pop($branch);
-            $branch = implode('.', $branch);
-        }
-
-        $result = Http::get($this->createServerUrl('changelog' . ((!is_null($branch)) ? '/' . $branch : '')));
-
-        if ($result->code == 404) {
-            throw new ApplicationException(Lang::get('system::lang.server.response_empty'));
-        }
-
-        if ($result->code != 200) {
-            throw new ApplicationException(
-                strlen($result->body)
-                ? $result->body
-                : Lang::get('system::lang.server.response_empty')
-            );
-        }
-
-        try {
-            $resultData = json_decode($result->body, true);
-        } catch (Exception $ex) {
-            throw new ApplicationException(Lang::get('system::lang.server.response_invalid'));
-        }
-
-        return $resultData;
+        return [];
     }
 
     //
@@ -943,44 +801,7 @@ class UpdateManager
      */
     public function requestServerData($uri, $postData = [])
     {
-        if (Config::get('cms.disableUpdates', true) || !Config::get('cms.updateServer')) {
-            return [];
-        }
-
-        $result = Http::post($this->createServerUrl($uri), function ($http) use ($postData) {
-            $this->applyHttpAttributes($http, $postData);
-        });
-
-        // @TODO: Refactor when marketplace API finalized
-        if ($result->body === 'Package not found') {
-            $result->code = 500;
-        }
-
-        if ($result->code == 404) {
-            throw new ApplicationException(Lang::get('system::lang.server.response_not_found'));
-        }
-
-        if ($result->code != 200) {
-            throw new ApplicationException(
-                strlen($result->body)
-                ? $result->body
-                : Lang::get('system::lang.server.response_empty')
-            );
-        }
-
-        $resultData = false;
-
-        try {
-            $resultData = @json_decode($result->body, true);
-        } catch (Exception $ex) {
-            throw new ApplicationException(Lang::get('system::lang.server.response_invalid'));
-        }
-
-        if ($resultData === false || (is_string($resultData) && !strlen($resultData))) {
-            throw new ApplicationException(Lang::get('system::lang.server.response_invalid'));
-        }
-
-        return $resultData;
+        return [];
     }
 
     /**
@@ -993,25 +814,7 @@ class UpdateManager
      */
     public function requestServerFile($uri, $fileCode, $expectedHash, $postData = [])
     {
-        if (Config::get('cms.disableUpdates', true) || !Config::get('cms.updateServer')) {
-            throw new ApplicationException('Updates are disabled.');
-        }
-
-        $filePath = $this->getFilePath($fileCode);
-
-        $result = Http::post($this->createServerUrl($uri), function ($http) use ($postData, $filePath) {
-            $this->applyHttpAttributes($http, $postData);
-            $http->toFile($filePath);
-        });
-
-        if ($result->code != 200) {
-            throw new ApplicationException(File::get($filePath));
-        }
-
-        if (md5_file($filePath) != $expectedHash) {
-            @unlink($filePath);
-            throw new ApplicationException(Lang::get('system::lang.server.file_corrupt'));
-        }
+        throw new ApplicationException('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install or update dependencies.');
     }
 
     /**
@@ -1021,7 +824,7 @@ class UpdateManager
      */
     protected function getFilePath($fileCode)
     {
-        $name = md5($fileCode) . '.arc';
+        $name = hash('sha256', (string) $fileCode) . '.arc';
         return $this->tempDirectory . '/' . $name;
     }
 
@@ -1048,7 +851,7 @@ class UpdateManager
             return '';
         }
 
-        if (substr($gateway, -1) != '/') {
+        if (!str_ends_with($gateway, '/')) {
             $gateway .= '/';
         }
 
@@ -1066,11 +869,11 @@ class UpdateManager
         $postData['protocol_version'] = '1.1';
         $postData['client'] = 'october';
 
-        $postData['server'] = base64_encode(serialize([
+        $postData['server'] = base64_encode(json_encode([
             'php'   => PHP_VERSION,
             'url'   => Url::to('/'),
             'since' => Parameter::get('system::app.birthday'),
-        ]));
+        ]) ?: '');
 
         if ($projectId = Parameter::get('system::project.id')) {
             $postData['project'] = $projectId;
@@ -1096,12 +899,11 @@ class UpdateManager
 
     /**
      * Create a nonce based on millisecond time
-     * @return int
+     * @return int|string
      */
     protected function createNonce()
     {
-        $mt = explode(' ', microtime());
-        return $mt[1] . substr($mt[0], 2, 6);
+        return (string) (int) (microtime(true) * 1000);
     }
 
     /**
