@@ -16,6 +16,20 @@ use Illuminate\Support\Fluent;
 class BlueprintState extends BaseBlueprintState
 {
     /**
+     * Create a new blueprint state instance.
+     */
+    public function __construct(\Illuminate\Database\Schema\Blueprint $blueprint, \Illuminate\Database\Connection $connection, ...$args)
+    {
+        $grammar = $args[0] ?? ($connection ? $connection->getSchemaGrammar() : null);
+
+        if ($grammar) {
+            parent::__construct($blueprint, $connection, $grammar);
+        } else {
+            parent::__construct($blueprint, $connection);
+        }
+    }
+
+    /**
      * Attributes carried over from the existing column definition when the changed definition does
      * not set them explicitly.
      *

@@ -76,7 +76,11 @@ class Blueprint extends BaseBlueprint
 
         if (!is_null($this->state)) {
             $connection = $args[0] ?? ($this->connection ?? null);
-            $this->state = new BlueprintState($this, $connection);
+            $grammar = $args[1] ?? ($connection ? $connection->getSchemaGrammar() : null);
+
+            if ($connection) {
+                $this->state = new BlueprintState($this, $connection, $grammar);
+            }
         }
     }
 }
