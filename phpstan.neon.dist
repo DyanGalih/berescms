@@ -1,0 +1,19 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 1
+    paths:
+        - modules/storm/src
+        - modules/system
+        - modules/backend
+        - modules/cms
+    excludePaths:
+        analyseAndScan:
+            - modules/*/tests/fixtures/*
+            - modules/*/tests/*
+            - modules/*/node_modules/*
+            - modules/*/assets/*
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    reportUnmatchedIgnoredErrors: false
