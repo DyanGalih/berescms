@@ -205,19 +205,23 @@ class InspectableContainerSecurityTest extends PluginTestCase
     {
         $content = $response->getContent();
 
-        if (preg_match('/<title>(.*?)<\/title>/s', $content, $matches)) {
-            $title = trim($matches[1]);
-            if (!empty($title) && $title !== 'Winter CMS' && $title !== 'BeresCMS') {
-                return $title;
-            }
+        if (preg_match('/<div class="exception-name-block"[^>]*>\s*<div>(.*?)<\/div>/s', $content, $matches)) {
+            return trim(strip_tags($matches[1]));
         }
 
-        if (preg_match('/<h1[^>]*>(.*?)<\/h1>/s', $content, $matches)) {
+        if (preg_match('/class="[^"]*exception-message[^"]*"[^>]*>(.*?)<\/(?:div|span|h1|h2|p)>/s', $content, $matches)) {
             return trim(strip_tags($matches[1]));
         }
 
         if (preg_match('/<div class="message"[^>]*>(.*?)<\/div>/s', $content, $matches)) {
             return trim(strip_tags($matches[1]));
+        }
+
+        if (preg_match('/<title>(.*?)<\/title>/s', $content, $matches)) {
+            $title = trim($matches[1]);
+            if (!empty($title) && $title !== 'Winter CMS' && $title !== 'BeresCMS' && $title !== 'Exception') {
+                return $title;
+            }
         }
 
         return $content;
