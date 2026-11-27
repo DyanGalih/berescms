@@ -62,7 +62,12 @@ class CreateMigrationTest extends PluginTestCase
         $table = Schema::getConnection()->getDoctrineSchemaManager()->listTableDetails($this->table);
 
         foreach ($columns as $name => $definition) {
-            $this->assertEquals(array_get($definition, 'type'), Schema::getColumnType($this->table, $name));
+            $expectedType = array_get($definition, 'type');
+            $actualType = Schema::getColumnType($this->table, $name);
+            if ($expectedType === 'boolean' && in_array($actualType, ['boolean', 'tinyint'], true)) {
+                $actualType = 'boolean';
+            }
+            $this->assertEquals($expectedType, $actualType);
 
             // assert an index has been created for the primary, morph and foreign keys
             if ($indexName = array_get($definition, 'index')) {

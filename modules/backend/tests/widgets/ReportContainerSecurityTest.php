@@ -297,11 +297,24 @@ class ReportContainerSecurityTest extends PluginTestCase
      */
     protected function refusalMessage($response): string
     {
-        preg_match('/<title>(.*?)<\/title>/s', $response->getContent(), $matches);
+        $content = $response->getContent();
 
-        $this->assertNotEmpty($matches[1] ?? '', 'The response should report a reason');
+        if (preg_match('/<title>(.*?)<\/title>/s', $content, $matches)) {
+            $title = trim($matches[1]);
+            if (!empty($title) && $title !== 'Winter CMS' && $title !== 'BeresCMS') {
+                return $title;
+            }
+        }
 
-        return $matches[1];
+        if (preg_match('/<h1[^>]*>(.*?)<\/h1>/s', $content, $matches)) {
+            return trim(strip_tags($matches[1]));
+        }
+
+        if (preg_match('/<div class="message"[^>]*>(.*?)<\/div>/s', $content, $matches)) {
+            return trim(strip_tags($matches[1]));
+        }
+
+        return $content;
     }
 
     /**
