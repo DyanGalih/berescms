@@ -32,6 +32,67 @@ class Parser
     protected $varPrefix = '';
 
     /**
+     * Registered global filters.
+     *
+     * @var array
+     */
+    protected static $registeredFilters = [];
+
+    /**
+     * The file model class to use for fileupload fields.
+     *
+     * @var string
+     */
+    protected static $fileModelClass = 'System\Models\File';
+
+    /**
+     * Set the file model class used for fileupload fields.
+     *
+     * @param string $class
+     * @return void
+     */
+    public static function setFileModelClass(string $class): void
+    {
+        static::$fileModelClass = $class;
+    }
+
+    /**
+     * Get the file model class used for fileupload fields.
+     *
+     * @return string
+     */
+    public static function getFileModelClass(): string
+    {
+        return static::$fileModelClass;
+    }
+
+    /**
+     * Register a custom text filter.
+     *
+     * @param string $name
+     * @param callable|array $callback
+     * @return void
+     */
+    public static function registerFilter(string $name, $callback): void
+    {
+        static::$registeredFilters[$name] = $callback;
+    }
+
+    /**
+     * Get default filters.
+     *
+     * @return array
+     */
+    public static function getDefaultFilters(): array
+    {
+        $defaultFilters = [
+            'md' => ['Winter\Storm\Parse\Markdown', 'parse'],
+        ];
+
+        return array_merge($defaultFilters, static::$registeredFilters);
+    }
+
+    /**
      * Constructor.
      *
      * Available options:
@@ -47,10 +108,15 @@ class Parser
         $this->varPrefix = array_get($options, 'varPrefix', '');
         $this->fieldParser = new FieldParser($template, $options);
 
-        $textFilters = [
-            'md' => ['Winter\Storm\Parse\Markdown', 'parse'],
-            'media' => ['System\Classes\MediaLibrary', 'url']
-        ];
+        $textFilters = static::getDefaultFilters();
+        if (isset($options['filters'])) {
+            $textFilters = array_merge($textFilters, $options['filters']);
+        }
+
+        // Backward compatibility fallback for unbooted legacy contexts
+        if (!isset($textFilters['media']) && class_exists('System\Classes\MediaLibrary')) {
+            $textFilters['media'] = ['System\Classes\MediaLibrary', 'url'];
+        }
 
         $this->textParser = new TextParser(['filters' => $textFilters]);
     }

@@ -60,6 +60,34 @@ class SyntaxParserTest extends \Winter\Storm\Tests\TestCase
         $this->assertEquals('<h1>{joker_websiteName}</h1>', $result);
     }
 
+    public function testCustomFilterRegistration()
+    {
+        Parser::registerFilter('custom_reverse', function ($text) {
+            return strrev($text);
+        });
+
+        $filters = Parser::getDefaultFilters();
+        $this->assertArrayHasKey('custom_reverse', $filters);
+        $this->assertArrayHasKey('md', $filters);
+    }
+
+    public function testFileModelClassConfiguration()
+    {
+        $original = \Winter\Storm\Parse\Syntax\SyntaxModelTrait::getFileModelClass();
+        $this->assertEquals('System\Models\File', $original);
+
+        try {
+            \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass('Acme\Models\CustomFile');
+            $this->assertEquals('Acme\Models\CustomFile', \Winter\Storm\Parse\Syntax\SyntaxModelTrait::getFileModelClass());
+
+            $model = new TestSyntaxConsumerModel();
+            $model->defineSyntaxRelations();
+            $this->assertEquals('Acme\Models\CustomFile', $model->attachOne['avatar']);
+        } finally {
+            \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass($original);
+        }
+    }
+
     public function testParseRepeaterToView()
     {
         $content = '';
@@ -237,5 +265,19 @@ class SyntaxParserTest extends \Winter\Storm\Tests\TestCase
             . '{/variable}';
 
         Parser::parse($content)->toEditor();
+    }
+}
+
+class TestSyntaxConsumerModel
+{
+    use \Winter\Storm\Parse\Syntax\SyntaxModelTrait;
+
+    public $attachOne = [];
+
+    public function getSyntaxFields()
+    {
+        return [
+            'avatar' => ['type' => 'fileupload'],
+        ];
     }
 }

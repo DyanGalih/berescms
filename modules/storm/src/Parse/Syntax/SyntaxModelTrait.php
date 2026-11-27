@@ -5,6 +5,27 @@ use Illuminate\Support\Facades\Request;
 trait SyntaxModelTrait
 {
 
+    /**
+     * Set the file model class used for fileupload fields.
+     *
+     * @param string $class
+     * @return void
+     */
+    public static function setFileModelClass(string $class): void
+    {
+        Parser::setFileModelClass($class);
+    }
+
+    /**
+     * Get the file model class used for fileupload fields.
+     *
+     * @return string
+     */
+    public static function getFileModelClass(): string
+    {
+        return Parser::getFileModelClass();
+    }
+
     public static function bootSyntaxModelTrait()
     {
         static::fetched(function ($model) {
@@ -30,7 +51,7 @@ trait SyntaxModelTrait
             }
 
             if ($params['type'] == 'fileupload') {
-                $this->attachOne[$field] = 'System\Models\File';
+                $this->attachOne[$field] = static::getFileModelClass();
             }
         }
     }
