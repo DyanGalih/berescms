@@ -205,6 +205,11 @@ class InspectableContainerSecurityTest extends PluginTestCase
     {
         $content = $response->getContent();
 
+        // Modern Laravel error view embeds the exception message in the markdown script constant
+        if (preg_match("/const markdown = \x27# [^\n]*?\\\\n\\\\n(.*?)\\\\n\\\\n/s", $content, $matches)) {
+            return trim($matches[1]);
+        }
+
         if (preg_match('/<div class="exception-name-block"[^>]*>\s*<div>(.*?)<\/div>/s', $content, $matches)) {
             return trim(strip_tags($matches[1]));
         }
