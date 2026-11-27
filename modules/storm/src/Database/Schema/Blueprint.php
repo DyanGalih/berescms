@@ -26,6 +26,23 @@ class Blueprint extends BaseBlueprint
 
         parent::__construct(...$args);
     }
+
+    /**
+     * Get the raw SQL statements for the blueprint.
+     *
+     * @return array
+     */
+    public function toSql(...$args)
+    {
+        $connection = $args[0] ?? $this->connection;
+        $grammar = $args[1] ?? ($connection ? $connection->getSchemaGrammar() : null);
+
+        if ($connection && $grammar) {
+            return parent::toSql($connection, $grammar);
+        }
+
+        return parent::toSql(...$args);
+    }
     /**
      * Indicate that the given columns should be dropped if it exists.
      *

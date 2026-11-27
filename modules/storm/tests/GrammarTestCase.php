@@ -81,6 +81,6 @@ class GrammarTestCase extends TestCase
 
     protected function runBlueprint(Blueprint $blueprint)
     {
-        return $blueprint->toSql();
+        return $blueprint->toSql($this->connection, $this->getSchemaGrammar());
     }
 }
