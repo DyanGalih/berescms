@@ -3,8 +3,7 @@ name: Tests
 on:
   push:
     branches:
-      - '1.2'
-      - develop
+      - main
   pull_request:
 
 concurrency:
@@ -13,18 +12,13 @@ concurrency:
 
 jobs:
   frontendTests:
-    strategy:
-      max-parallel: 2
-      matrix:
-        operatingSystem: [ubuntu-latest, windows-latest]
-      fail-fast: false
-    runs-on: ${{ matrix.operatingSystem }}
-    name: ${{ matrix.operatingSystem }} / JavaScript
+    runs-on: ubuntu-latest
+    name: ubuntu-latest / JavaScript
     env:
-      nodeVersion: 16
-      phpVersion: '8.2'
+      nodeVersion: 18
+      phpVersion: '8.3'
       extensions: curl, fileinfo, gd, mbstring, openssl, pdo, pdo_sqlite, sqlite3, xml, zip
-      key: winter-cms-cache-develop
+      key: berescms-cache-main
     steps:
       - name: Checkout changes
         uses: actions/checkout@v3
@@ -55,14 +49,6 @@ jobs:
         with:
           node-version: ${{ env.nodeVersion }}
 
-      - name: Switch library dependency (develop)
-        if: github.ref == 'refs/heads/develop' || github.base_ref == 'develop'
-        run: php ./.github/workflows/utilities/library-switcher "dev-develop as 1.2"
-
-      - name: Switch library dependency (1.2)
-        if: github.head_ref == '1.2' || github.ref == 'refs/heads/1.2' || github.base_ref == '1.2'
-        run: php ./.github/workflows/utilities/library-switcher "1.2.x-dev as 1.2"
-
       - name: Setup dependency cache
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -92,16 +78,15 @@ jobs:
 
   phpUnitTests:
     strategy:
-      max-parallel: 8
+      max-parallel: 2
       matrix:
-        operatingSystem: [ubuntu-latest, windows-latest]
-        phpVersion: ['8.2', '8.3', '8.4', '8.5']
+        phpVersion: ['8.3', '8.4']
       fail-fast: false
-    runs-on: ${{ matrix.operatingSystem }}
-    name: ${{ matrix.operatingSystem }} / PHP ${{ matrix.phpVersion }}
+    runs-on: ubuntu-latest
+    name: ubuntu-latest / PHP ${{ matrix.phpVersion }}
     env:
       extensions: curl, fileinfo, gd, mbstring, openssl, pdo, pdo_sqlite, sqlite3, xml, zip
-      key: winter-cms-cache-develop
+      key: berescms-cache-main
     steps:
       - name: Checkout changes
         uses: actions/checkout@v3
@@ -148,10 +133,6 @@ jobs:
 
       - name: Run post-update Composer scripts
         run: php artisan package:discover
-
-      - name: Setup problem matchers for PHPUnit
-        if: matrix.phpVersion == '8.1'
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Run Linting and Tests
         run: |
