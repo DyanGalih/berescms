@@ -37,6 +37,64 @@ trait HasConnection
     }
 
     /**
+     * Set the query grammar to the default implementation.
+     *
+     * @return void
+     */
+    public function useDefaultQueryGrammar()
+    {
+        parent::useDefaultQueryGrammar();
+
+        if ($this->queryGrammar && method_exists($this->queryGrammar, 'setConnection')) {
+            $this->queryGrammar->setConnection($this);
+        }
+    }
+
+    /**
+     * Set the schema grammar to the default implementation.
+     *
+     * @return void
+     */
+    public function useDefaultSchemaGrammar()
+    {
+        parent::useDefaultSchemaGrammar();
+
+        if ($this->schemaGrammar && method_exists($this->schemaGrammar, 'setConnection')) {
+            $this->schemaGrammar->setConnection($this);
+        }
+    }
+
+    /**
+     * Set the query grammar used by the connection.
+     *
+     * @param  \Illuminate\Database\Query\Grammars\Grammar  $grammar
+     * @return $this
+     */
+    public function setQueryGrammar($grammar)
+    {
+        if (method_exists($grammar, 'setConnection')) {
+            $grammar->setConnection($this);
+        }
+
+        return parent::setQueryGrammar($grammar);
+    }
+
+    /**
+     * Set the schema grammar used by the connection.
+     *
+     * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
+     * @return $this
+     */
+    public function setSchemaGrammar($grammar)
+    {
+        if (method_exists($grammar, 'setConnection')) {
+            $grammar->setConnection($this);
+        }
+
+        return parent::setSchemaGrammar($grammar);
+    }
+
+    /**
      * Flush the memory cache.
      * @return void
      */

@@ -6,6 +6,19 @@ use Illuminate\Database\Query\Expression;
 trait SelectConcatenations
 {
     /**
+     * Create a new grammar instance.
+     *
+     * @param  \Illuminate\Database\Connection|null  $connection
+     * @return void
+     */
+    public function __construct($connection = null)
+    {
+        if ($connection && method_exists($this, 'setConnection')) {
+            $this->setConnection($connection);
+        }
+    }
+
+    /**
      * Compile the "select *" portion of the query.
      *
      * This particular method will call the original compileColumns() method provided by the grammar, then append

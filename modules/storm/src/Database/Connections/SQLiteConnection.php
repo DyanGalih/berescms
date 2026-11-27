@@ -22,7 +22,9 @@ class SQLiteConnection extends BaseSQLiteConnection
      */
     protected function getDefaultQueryGrammar()
     {
-        return new QueryGrammar($this);
+        ($grammar = new QueryGrammar($this))->setConnection($this);
+
+        return $this->withTablePrefix($grammar);
     }
 
     /**
@@ -46,7 +48,9 @@ class SQLiteConnection extends BaseSQLiteConnection
      */
     protected function getDefaultSchemaGrammar()
     {
-        return new SchemaGrammar($this);
+        ($grammar = new SchemaGrammar($this))->setConnection($this);
+
+        return $this->withTablePrefix($grammar);
     }
 
     /**

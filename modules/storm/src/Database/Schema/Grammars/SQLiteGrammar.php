@@ -7,6 +7,19 @@ use Illuminate\Database\Schema\Grammars\SQLiteGrammar as BaseSQLiteGrammar;
 class SQLiteGrammar extends BaseSQLiteGrammar
 {
     /**
+     * Create a new grammar instance.
+     *
+     * @param  \Illuminate\Database\Connection|null  $connection
+     * @return void
+     */
+    public function __construct($connection = null)
+    {
+        if ($connection && method_exists($this, 'setConnection')) {
+            $this->setConnection($connection);
+        }
+    }
+
+    /**
      * Format a value so that it can be used in "default" clauses.
      *
      * @param  mixed  $value

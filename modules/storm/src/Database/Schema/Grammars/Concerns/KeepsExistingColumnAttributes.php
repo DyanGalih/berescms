@@ -13,6 +13,19 @@ use Illuminate\Support\Fluent;
 trait KeepsExistingColumnAttributes
 {
     /**
+     * Create a new grammar instance.
+     *
+     * @param  \Illuminate\Database\Connection|null  $connection
+     * @return void
+     */
+    public function __construct($connection = null)
+    {
+        if ($connection && method_exists($this, 'setConnection')) {
+            $this->setConnection($connection);
+        }
+    }
+
+    /**
      * Get the attributes of an existing column, as reported by the schema builder, that a change keeps
      * when the new definition doesn't set them. A null value is left to the new definition.
      *
