@@ -3,7 +3,7 @@
 namespace Winter\Storm\Tests;
 
 use Illuminate\Database\Connection;
-use Illuminate\Database\Schema\Blueprint;
+use Winter\Storm\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
