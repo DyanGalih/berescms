@@ -35,7 +35,13 @@ class SQLiteSchemaGrammarTest extends GrammarTestCase
         $connection->setSchemaGrammar(new SQLiteGrammar($connection));
 
         $builder = $connection->getSchemaBuilder();
-        $builder->blueprintResolver(fn ($conn, $table, $callback) => new Blueprint($conn, $table, $callback));
+        $builder->blueprintResolver(function (...$args) use ($connection) {
+            $blueprint = new Blueprint(...$args);
+            if (is_null($blueprint->connection)) {
+                $blueprint->connection = $connection;
+            }
+            return $blueprint;
+        });
 
         return [$pdo, $connection, $builder];
     }

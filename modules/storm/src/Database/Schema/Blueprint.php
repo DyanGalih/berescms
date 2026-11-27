@@ -9,6 +9,24 @@ use Winter\Storm\Support\Facades\Schema;
 class Blueprint extends BaseBlueprint
 {
     /**
+     * The database connection instance.
+     *
+     * @var \Illuminate\Database\Connection|null
+     */
+    public $connection = null;
+
+    /**
+     * Create a new schema blueprint.
+     */
+    public function __construct(...$args)
+    {
+        if (isset($args[0]) && $args[0] instanceof \Illuminate\Database\Connection) {
+            $this->connection = array_shift($args);
+        }
+
+        parent::__construct(...$args);
+    }
+    /**
      * Indicate that the given columns should be dropped if it exists.
      *
      * @param  array|mixed  $columns
