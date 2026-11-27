@@ -22,6 +22,7 @@ Per the BeresCMS Architecture Constitution:
 | 2026-11-27 | Storm / System | Decoupled Storm syntax parser upward references to System module; added dynamic filter registration and configurable file model resolution | Enforces clean modular monolith layering (foundation has zero upward coupling to domain modules). | `group-decouple-storm-syntax-parser` |
 | 2026-11-27 | Repository Root | Updated `README.md` and added 2026 copyright line to `LICENSE` | Clarified independent fork status, MIT license attribution, and project governance. | `ag-init` |
 | 2026-11-27 | Developer Experience / CI | Configured PHPStan 2.x static analysis (`phpstan.neon.dist`, `phpstan-baseline.neon`, `phpstan-bootstrap.php`), added `composer phpstan` script, and added CI analysis job | Enforces static type checking and prevents regressions across `storm`, `system`, `backend`, and `cms` modules while baselining existing legacy code. | `group-setup-phpstan` |
+| 2026-11-27 | `modules/system` | Retired proprietary marketplace update and download server protocols (`downloadCore`, `extractCore`, `downloadPlugin`, `extractPlugin`, `downloadTheme`, `extractTheme`, `requestServerFile`, `requestServerData`) in favor of native Composer workflows; upgraded weak `md5` hashing to `sha256` and removed unsafe `unserialize` caching | Eliminates proprietary vendor server downloads and 6 critical hygiene/security findings while preserving local database migrations, versioning, and rollback mechanics. | `group-retire-marketplace-downloads` |
 
 ---
 
