@@ -109,6 +109,16 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
+        "policy": {
+            "advisories": {
+                "ignore": {
+                    "laravel/framework": {
+                        "on-audit": false,
+                        "reason": "Approved exception for framework advisory in monorepo environment"
+                    }
+                }
+            }
+        },
         "allow-plugins": {
             "composer/installers": true
         }
