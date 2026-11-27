@@ -79,6 +79,10 @@ class SyntaxParserTest extends \Winter\Storm\Tests\TestCase
         \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass('Acme\Models\CustomFile');
         $this->assertEquals('Acme\Models\CustomFile', \Winter\Storm\Parse\Syntax\SyntaxModelTrait::getFileModelClass());
 
+        $model = new TestSyntaxConsumerModel();
+        $model->defineSyntaxRelations();
+        $this->assertEquals('Acme\Models\CustomFile', $model->attachOne['avatar']);
+
         // Restore
         \Winter\Storm\Parse\Syntax\SyntaxModelTrait::setFileModelClass($original);
     }
@@ -260,5 +264,19 @@ class SyntaxParserTest extends \Winter\Storm\Tests\TestCase
             . '{/variable}';
 
         Parser::parse($content)->toEditor();
+    }
+}
+
+class TestSyntaxConsumerModel
+{
+    use \Winter\Storm\Parse\Syntax\SyntaxModelTrait;
+
+    public $attachOne = [];
+
+    public function getSyntaxFields()
+    {
+        return [
+            'avatar' => ['type' => 'fileupload'],
+        ];
     }
 }

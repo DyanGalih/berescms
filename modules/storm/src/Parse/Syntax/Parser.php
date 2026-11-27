@@ -39,6 +39,34 @@ class Parser
     protected static $registeredFilters = [];
 
     /**
+     * The file model class to use for fileupload fields.
+     *
+     * @var string
+     */
+    protected static $fileModelClass = 'System\Models\File';
+
+    /**
+     * Set the file model class used for fileupload fields.
+     *
+     * @param string $class
+     * @return void
+     */
+    public static function setFileModelClass(string $class): void
+    {
+        static::$fileModelClass = $class;
+    }
+
+    /**
+     * Get the file model class used for fileupload fields.
+     *
+     * @return string
+     */
+    public static function getFileModelClass(): string
+    {
+        return static::$fileModelClass;
+    }
+
+    /**
      * Register a custom text filter.
      *
      * @param string $name

@@ -6,13 +6,6 @@ trait SyntaxModelTrait
 {
 
     /**
-     * The file model class to use for fileupload fields.
-     *
-     * @var string
-     */
-    protected static $fileModelClass = 'System\Models\File';
-
-    /**
      * Set the file model class used for fileupload fields.
      *
      * @param string $class
@@ -20,7 +13,7 @@ trait SyntaxModelTrait
      */
     public static function setFileModelClass(string $class): void
     {
-        static::$fileModelClass = $class;
+        Parser::setFileModelClass($class);
     }
 
     /**
@@ -30,7 +23,7 @@ trait SyntaxModelTrait
      */
     public static function getFileModelClass(): string
     {
-        return static::$fileModelClass;
+        return Parser::getFileModelClass();
     }
 
     public static function bootSyntaxModelTrait()
