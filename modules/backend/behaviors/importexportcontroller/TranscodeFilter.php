@@ -17,6 +17,7 @@ class TranscodeFilter extends php_user_filter
 
     protected $encodingTo;
 
+    #[\ReturnTypeWillChange]
     public function filter($in, $out, &$consumed, $closing)
     {
         while ($resource = stream_bucket_make_writeable($in)) {
@@ -42,6 +43,7 @@ class TranscodeFilter extends php_user_filter
         return PSFS_PASS_ON;
     }
 
+    #[\ReturnTypeWillChange]
     public function onCreate()
     {
         if (strpos($this->filtername, self::FILTER_NAME) !== 0) {
@@ -70,6 +72,7 @@ class TranscodeFilter extends php_user_filter
         return true;
     }
 
+    #[\ReturnTypeWillChange]
     public function onClose()
     {
         setlocale(LC_CTYPE, $this->params['locale']);
