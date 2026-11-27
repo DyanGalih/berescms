@@ -20,8 +20,15 @@ class Blueprint extends BaseBlueprint
      */
     public function __construct(...$args)
     {
+        $parentRef = new \ReflectionMethod(BaseBlueprint::class, '__construct');
+        $params = $parentRef->getParameters();
+        $expectsConnection = isset($params[0]) && ($type = $params[0]->getType()) && !$type->isBuiltin() && is_a($type->getName(), \Illuminate\Database\Connection::class, true);
+
         if (isset($args[0]) && $args[0] instanceof \Illuminate\Database\Connection) {
-            $this->connection = array_shift($args);
+            $this->connection = $args[0];
+            if (!$expectsConnection) {
+                array_shift($args);
+            }
         }
 
         parent::__construct(...$args);
