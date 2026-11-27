@@ -1,0 +1,102 @@
+<?php
+
+use Illuminate\Config\Repository;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\PackageManifest;
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\ServiceProvider;
+use Winter\Storm\Foundation\Application;
+use Winter\Storm\Filesystem\PathResolver;
+
+class ApplicationTest extends \Winter\Storm\Tests\TestCase
+{
+    protected string $basePath = '';
+
+    protected function setUp(): void
+    {
+        // Mock application
+        $this->basePath = '/tmp/custom-path';
+        $this->app = new Application($this->basePath);
+    }
+
+    protected function tearDown(): void
+    {
+        // These tests build their own throwaway applications instead of booting one through Testbench, so there is nothing for Testbench to tear down.
+    }
+
+    public function testPathMethods()
+    {
+        $this->assertEquals(PathResolver::join($this->basePath, '/plugins'), $this->app->pluginsPath());
+        $this->assertEquals(PathResolver::join($this->basePath, '/themes'), $this->app->themesPath());
+        $this->assertEquals(PathResolver::join($this->basePath, '/storage/temp'), $this->app->tempPath());
+        $this->assertEquals(PathResolver::join($this->basePath, '/storage/app/uploads'), $this->app->uploadsPath());
+        $this->assertEquals(PathResolver::join($this->basePath, '/storage/app/media'), $this->app->mediaPath());
+
+        $storagePath = $this->basePath . '/storage';
+
+        $this->assertEquals(PathResolver::join($storagePath, '/framework/config.php'), $this->app->getCachedConfigPath());
+        $this->assertEquals(PathResolver::join($storagePath, '/framework/routes.php'), $this->app->getCachedRoutesPath());
+        $this->assertEquals(PathResolver::join($storagePath, '/framework/compiled.php'), $this->app->getCachedCompilePath());
+        $this->assertEquals(PathResolver::join($storagePath, '/framework/services.php'), $this->app->getCachedServicesPath());
+        $this->assertEquals(PathResolver::join($storagePath, '/framework/packages.php'), $this->app->getCachedPackagesPath());
+        $this->assertEquals(PathResolver::join($storagePath, '/framework/classes.php'), $this->app->getCachedClassesPath());
+    }
+
+    public function testSetPathMethods()
+    {
+        foreach (['plugins', 'themes', 'temp', 'uploads', 'media'] as $type) {
+            $getter = $type . 'Path';
+            $setter = 'set' . ucfirst($type) . 'Path';
+
+            $path = PathResolver::join('/my'.ucfirst($type), '/custom/path');
+            $expected = PathResolver::standardize($path);
+            $this->app->{$setter}($path);
+
+            $this->assertEquals($expected, $this->app->{$getter}());
+        }
+    }
+
+    public function testRegistersDiscoveredPackageProviders()
+    {
+        $basePath = sys_get_temp_dir() . '/winter-storm-' . uniqid();
+        mkdir($basePath . '/storage/framework', 0777, true);
+
+        $this->app = new Application($basePath);
+        $this->app->instance('config', new Repository([
+            'app' => ['providers' => [], 'loadDiscoveredPackages' => true],
+        ]));
+        $this->app->instance(PackageManifest::class, new class extends PackageManifest {
+            public function __construct()
+            {
+            }
+
+            public function providers()
+            {
+                return [DiscoveredPackageServiceProvider::class];
+            }
+        });
+        $facadeApp = Facade::getFacadeApplication();
+        Facade::clearResolvedInstances();
+        Facade::setFacadeApplication($this->app);
+
+        try {
+            $this->app->registerConfiguredProviders();
+
+            $this->assertNotNull($this->app->getProvider(DiscoveredPackageServiceProvider::class));
+            $this->assertTrue($this->app->bound('discovered-package'));
+        } finally {
+            Facade::clearResolvedInstances();
+            Facade::setFacadeApplication($facadeApp);
+
+            (new Filesystem)->deleteDirectory($basePath);
+        }
+    }
+}
+
+class DiscoveredPackageServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this->app->instance('discovered-package', true);
+    }
+}

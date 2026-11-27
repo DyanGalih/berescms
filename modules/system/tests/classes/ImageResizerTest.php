@@ -6,7 +6,6 @@ use Backend\Facades\Backend;
 use Cms\Classes\Controller as CmsController;
 use Cms\Classes\Theme;
 use Config;
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Event;
 use File;
 use Storage;
@@ -21,8 +20,6 @@ use Winter\Storm\Exception\SystemException;
 class ImageResizerTest extends PluginTestCase
 {
     use MigratesDatabaseOnce;
-
-    use ArraySubsetAsserts;
 
     protected $originalThemesPath = '';
 

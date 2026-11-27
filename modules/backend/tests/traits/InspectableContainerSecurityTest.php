@@ -206,7 +206,7 @@ class InspectableContainerSecurityTest extends PluginTestCase
         $content = $response->getContent();
 
         // Modern Laravel error view embeds the exception message in the markdown script constant
-        if (preg_match("/const markdown = \x27# [^\n]*?\\\\n\\\\n(.*?)\\\\n\\\\n/s", $content, $matches)) {
+        if (preg_match("/const markdown = ['\"`](?:# [^\n]*?\\\\n\\\\n)?(.*?)\\\\n\\\\n/s", $content, $matches)) {
             return trim($matches[1]);
         }
 
@@ -229,7 +229,15 @@ class InspectableContainerSecurityTest extends PluginTestCase
             }
         }
 
-        return $content;
+        if (preg_match('/(?:ApplicationException|Exception)?[:\s]*([^\r\n<>\'"]*options cannot be loaded[^\r\n<>\'"]*)/i', $content, $matches)) {
+            return trim($matches[1]);
+        }
+
+        // If falling back to content, remove stack frame line numbers and frame IDs so comparisons between tests remain stable
+        $clean = preg_replace('/#frame-\d+[^"\']*/', '', $content);
+        $clean = preg_replace('/:\d+/', '', $clean);
+
+        return $clean;
     }
 
     protected function assertWasNotLookedUp(string $className): void
