@@ -65,6 +65,11 @@ class ThemeInstall extends Command
 
             $themeDetails = $updateManager->requestThemeDetails($themeName);
 
+            if (empty($themeDetails) || empty($themeDetails['code'])) {
+                $this->error('Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer or place theme files directly in themes/.');
+                return;
+            }
+
             if ($themeManager->isInstalled($themeDetails['code'])) {
                 return $this->error(sprintf('The theme %s is already installed.', $themeDetails['code']));
             }
