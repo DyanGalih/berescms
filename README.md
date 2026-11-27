@@ -17,7 +17,7 @@ These will change over time as the project diverges.
 
 ## Requirements
 
-- PHP 8.1 or newer (tested on 8.1 – 8.5)
+- PHP 8.2 or newer (tested on 8.2 – 8.5)
 - Composer
 - A database supported by Laravel (MySQL/MariaDB, PostgreSQL, SQLite, or SQL Server)
 
