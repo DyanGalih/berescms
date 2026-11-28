@@ -48,10 +48,14 @@ class ComposerManager
         $vendorPath = base_path() .'/vendor';
 
         if (file_exists($file = $vendorPath . '/composer/autoload_files.php')) {
+            $included = array_flip(get_included_files());
             $includeFiles = require $file;
             foreach ($includeFiles as $includeFile) {
-                $relativeFile = $this->stripVendorDir($includeFile, $vendorPath);
-                $result[$relativeFile] = true;
+                $real = realpath($includeFile);
+                if ($real && isset($included[$real])) {
+                    $relativeFile = $this->stripVendorDir($includeFile, $vendorPath);
+                    $result[$relativeFile] = true;
+                }
             }
         }
 

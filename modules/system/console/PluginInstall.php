@@ -1,13 +1,13 @@
 <?php namespace System\Console;
 
-use Winter\Storm\Console\Command;
-use System\Classes\UpdateManager;
+use Symfony\Component\Process\Process;
+use System\Classes\ComposerManager;
 use System\Classes\PluginManager;
+use System\Classes\UpdateManager;
+use Winter\Storm\Console\Command;
 
 /**
- * Console command to install a new plugin.
- *
- * This adds a new plugin by requesting it from the Winter marketplace.
+ * Console command to install a plugin using Composer.
  *
  * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
@@ -23,50 +23,81 @@ class PluginInstall extends Command
      * @var string The name and signature of this command.
      */
     protected $signature = 'plugin:install
-        {plugin : The plugin to install. <info>(eg: Winter.Blog)</info>}';
+        {name : The Composer package name of the plugin. <info>(eg: author/plugin-name)</info>}
+        {--m|no-migrate : Do not automatically run database migrations after installation.}';
 
     /**
      * @var string The console command description.
      */
-    protected $description = 'Install a plugin from the Winter marketplace.';
+    protected $description = 'Installs a plugin via Composer and runs database migrations.';
 
     /**
      * Execute the console command.
-     * @return void
      */
-    public function handle()
+    public function handle(): int
     {
-        $pluginName = $this->argument('plugin');
-        $manager = UpdateManager::instance()->setNotesOutput($this->output);
+        $packageName = trim((string) $this->argument('name'));
 
-        $pluginDetails = $manager->requestPluginDetails($pluginName);
-
-        if (empty($pluginDetails) || empty($pluginDetails['code'])) {
-            $this->output->writeln('<error>Proprietary marketplace and server download protocols have been retired in BeresCMS. Please use Composer to install plugins (e.g. composer require <package>).</error>');
-            return;
+        // Validate package name (vendor/package)
+        if (!preg_match('/^[a-z0-9_.-]+\/[a-z0-9_.-]+$/i', $packageName)) {
+            $this->error(sprintf(
+                'Invalid package name "%s". Please specify a valid Composer package name in "vendor/package" format.',
+                $packageName
+            ));
+            return 1;
         }
 
-        $code = array_get($pluginDetails, 'code');
-        $hash = array_get($pluginDetails, 'hash');
+        $composerBin = $this->getComposerBinary();
+        $this->info(sprintf('Installing plugin package %s via Composer...', $packageName));
 
-        $this->output->writeln(sprintf('<info>Downloading plugin: %s</info>', $code));
-        $manager->downloadPlugin($code, $hash, true);
+        $process = new Process([$composerBin, 'require', $packageName], base_path());
+        $process->setTimeout(300);
 
-        $this->output->writeln(sprintf('<info>Unpacking plugin: %s</info>', $code));
-        $manager->extractPlugin($code, $hash);
+        $exitCode = $process->run(function ($type, $buffer) {
+            $this->output->write($buffer);
+        });
 
-        /*
-         * Make sure plugin is registered
-         */
+        if ($exitCode !== 0) {
+            $this->error(sprintf('Composer failed to install package "%s".', $packageName));
+            return $exitCode;
+        }
+
+        $this->info('Package installed successfully.');
+
+        // Refresh the root Composer loader so newly installed packages are discoverable
+        ComposerManager::instance()->autoload(base_path('vendor'));
+
+        // Reload plugins in case new plugin was added
         $pluginManager = PluginManager::instance();
+        $existingPlugins = array_keys($pluginManager->getAllPlugins());
         $pluginManager->loadPlugins();
-        $plugin = $pluginManager->findByIdentifier($code);
-        $pluginManager->registerPlugin($plugin, $code);
 
-        /*
-         * Migrate plugin
-         */
-        $this->output->writeln(sprintf('<info>Migrating plugin...</info>', $code));
-        $manager->updatePlugin($code);
+        // Register any newly discovered plugins before running migrations
+        foreach ($pluginManager->getAllPlugins() as $code => $plugin) {
+            if (!in_array($code, $existingPlugins, true)) {
+                $pluginManager->registerPlugin($plugin, $code);
+            }
+        }
+
+        // Run migrations unless --no-migrate flag is passed
+        if (!$this->option('no-migrate')) {
+            $this->info('Running plugin migrations...');
+            UpdateManager::instance()->setNotesOutput($this->output)->update();
+        }
+
+        $this->info(sprintf('Plugin %s installed successfully.', $packageName));
+        return 0;
+    }
+
+    /**
+     * Get the Composer executable binary.
+     */
+    protected function getComposerBinary(): string
+    {
+        if ($customBin = env('COMPOSER_BINARY')) {
+            return (string) $customBin;
+        }
+
+        return 'composer';
     }
 }
