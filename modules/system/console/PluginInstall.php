@@ -67,6 +67,19 @@ class PluginInstall extends Command
         // Refresh the root Composer loader so newly installed packages are discoverable
         ComposerManager::instance()->autoload(base_path('vendor'));
 
+        // Ensure newly installed autoload.files entries are executed before plugin discovery
+        $autoloadFiles = base_path('vendor/composer/autoload_files.php');
+        if (file_exists($autoloadFiles)) {
+            $included = array_flip(get_included_files());
+            $files = require $autoloadFiles;
+            foreach ($files as $file) {
+                $real = realpath($file);
+                if ($real && !isset($included[$real])) {
+                    include_once $real;
+                }
+            }
+        }
+
         // Reload plugins in case new plugin was added
         $pluginManager = PluginManager::instance();
         $existingPlugins = array_keys($pluginManager->getAllPlugins());
